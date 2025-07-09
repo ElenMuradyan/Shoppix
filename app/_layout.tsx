@@ -3,7 +3,7 @@ import { useFonts } from 'expo-font';
 import { Slot, Stack, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
-
+import "../global.css";
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useEffect } from 'react';
 import { ROUTE_CONSTANTS } from '@/utils/routes';
@@ -11,7 +11,6 @@ import { ROUTE_CONSTANTS } from '@/utils/routes';
 function RouteGuard({children}: {children: React.ReactNode}) {
   const isAuth = false;
   const router = useRouter();
-
   useEffect(() => {
     const timeout = setTimeout(() => {
       if(!isAuth) {

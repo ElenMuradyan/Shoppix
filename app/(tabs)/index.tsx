@@ -7,9 +7,9 @@ export default function HomeScreen() {
     <View
       style={styles.view}
     >
-      <Text>Home Page</Text>
+      <Text className="text-yellow-700 dark:text-yellow-400">Home Page</Text>
       <Link href={ROUTE_CONSTANTS.AUTH_PROTECTED.LOGIN}>
-            <Text style={{ color: "blue", marginTop: 10 }}>Go to Login</Text>
+            <Text className="text-blue-800 dark:text-amber-500">Go to Login</Text>
       </Link>
     </View>
   )

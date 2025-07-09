@@ -4,9 +4,9 @@ import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import 'react-native-reanimated';
-
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
+import '../../global.css';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
