@@ -19,7 +19,7 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={colorScheme === 'light' ? DarkTheme : DefaultTheme}>
       <Tabs screenOptions={{tabBarActiveTintColor: 'coral'}}>
         <Tabs.Screen name="index" options={{ title: "Home", headerShown: false, 
           tabBarIcon: ({color, focused}) => {

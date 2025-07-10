@@ -1,8 +1,8 @@
 import { ROUTE_CONSTANTS } from "@/utils/routes";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { KeyboardAvoidingView, Platform, View } from "react-native";
-import { TextInput, Text, Button, useTheme } from "react-native-paper";
+import { TouchableOpacity, View } from "react-native";
+import { Text, Button, useTheme } from "react-native-paper";
 import { useForm, Controller } from "react-hook-form";
 import { userDataType } from "@/types/slices/userSlice";
 import { ScrollView } from "react-native";
@@ -10,6 +10,8 @@ import { handleSignUp } from "@/utils/auth_handlers/signup";
 import { styles } from "@/styles/signupStyles";
 import { FormInput } from "@/components/Form/FormInput";
 import { passwordRules } from "@/constants/auth/validation";
+import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
+import SignUpWrapper from "./sign-up-wrapper";
 
 export default function SignUp() {
     const { control, handleSubmit, formState: { errors } } = useForm<userDataType>({
@@ -30,7 +32,7 @@ export default function SignUp() {
     const {push} = useRouter();
     const theme = useTheme();
 
-    async function signUp(data: userDataType) {
+    async function onSubmit(data: userDataType) {
     const result = await handleSignUp(data);
     if (result) {
         setError(result);
@@ -39,22 +41,11 @@ export default function SignUp() {
     }
     }
 
-    const handleSwitchMode = () => {
-        push(ROUTE_CONSTANTS.AUTH_PROTECTED.LOGIN);
-    }
-
     return (
-    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
         <ScrollView
-            contentContainerStyle={styles.container}
             keyboardShouldPersistTaps="handled"
         >
-            <View style={styles.container}>
-                <Text style={styles.title} variant="headlineMedium">
-                    Create Account
-                </Text>
-
+            <SignUpWrapper>
                 <Controller
                 control={control}
                 name="firstName"
@@ -65,6 +56,7 @@ export default function SignUp() {
                     value={value}
                     onChange={onChange}
                     error={errors.firstName?.message}
+                    delaytime={100}
                     />
                 )}
                 />
@@ -79,6 +71,7 @@ export default function SignUp() {
                     value={value}
                     onChange={onChange}
                     error={errors.lastName?.message}
+                    delaytime={200}
                     />
                 )}
                 />
@@ -101,6 +94,7 @@ export default function SignUp() {
                     error={errors.email?.message}
                     keyboardType="email-address"
                     autoCapitalize="none"
+                    delaytime={300}
                     />
                 )}
                 />
@@ -117,6 +111,7 @@ export default function SignUp() {
                     error={errors.password?.message}
                     secureTextEntry
                     helperText="6–16 chars, 1+ number, 1+ special (!@#$%^&*)"
+                    delaytime={400}
                     />
                 )}
                 />
@@ -131,6 +126,7 @@ export default function SignUp() {
                     onChange={onChange}
                     keyboardType="phone-pad"
                     error={errors.phone?.message}
+                    delaytime={500}
                     />
                 )}
                 />
@@ -145,6 +141,7 @@ export default function SignUp() {
                     value={value}
                     onChange={onChange}
                     error={errors.region?.message}
+                    delaytime={600}
                     />
                 )}
                 />
@@ -159,6 +156,7 @@ export default function SignUp() {
                     value={value}
                     onChange={onChange}
                     error={errors.city?.message}
+                    delaytime={700}
                     />
                 )}
                 />
@@ -173,6 +171,7 @@ export default function SignUp() {
                     value={value}
                     onChange={onChange}
                     error={errors.street?.message}
+                    delaytime={800}
                     />
                 )}
                 />
@@ -194,6 +193,7 @@ export default function SignUp() {
                     onChange={onChange}
                     error={errors.postIndex?.message}
                     keyboardType="numeric"
+                    delaytime={900}
                     />
                 )}
                 />
@@ -208,6 +208,7 @@ export default function SignUp() {
                     value={value}
                     onChange={onChange}
                     error={errors.homeIndex?.message}
+                    delaytime={1000}
                     />
                 )}
                 />
@@ -215,14 +216,18 @@ export default function SignUp() {
 
                 {error && <Text style={{ color: theme.colors.error }}>{error}</Text>}
 
-                <Button
-                onPress={handleSubmit(signUp)}
-                mode="contained"
-                >
-                Test Sign Up
-                </Button>
-                <Button style={styles.switch} onPress={handleSwitchMode} mode='text'>Already habe an account? Sign In</Button>
-            </View>
+                <View className="flex w-full justify-between items-center">
+                <Animated.View entering={FadeInDown.delay(1100).duration(1000).springify()}>
+                    <TouchableOpacity onPress={handleSubmit(onSubmit)} className='w-[100px] p-1 bg-[#000000] rounded-2xl mb-3'>
+                        <Animated.Text className='text-sm font-bold text-white text-center'>
+                            Sign Up
+                        </Animated.Text>
+                    </TouchableOpacity>
+                </Animated.View>
+
+                <Animated.Text className="text-black">Already have an account? <Animated.Text onPress={() => push(ROUTE_CONSTANTS.AUTH_PROTECTED.LOGIN)} className='text-[#0062ff]'>Sign In</Animated.Text></Animated.Text>
+                </View>
+            </SignUpWrapper>
         </ScrollView>
-    </KeyboardAvoidingView>)
+    )
 }

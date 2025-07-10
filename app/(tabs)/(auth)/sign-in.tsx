@@ -4,10 +4,12 @@ import { ROUTE_CONSTANTS } from "@/utils/routes";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { KeyboardAvoidingView, Platform, View } from "react-native";
-import { Button, Text, useTheme } from "react-native-paper";
+import { TouchableOpacity, View } from "react-native";
+import { Text, useTheme } from "react-native-paper";
 import { handleSignIn } from "@/utils/auth_handlers/signin";
 import { emailRules, passwordRules } from "@/constants/auth/validation";
+import Animated, { FadeInDown } from "react-native-reanimated";
+import SignInWrapper from "./sign-in-wrapper";
 
 type FormData = {
   email: string;
@@ -30,15 +32,7 @@ export default function SignIn() {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <View style={styles.container}>
-        <Text style={styles.title} variant="headlineMedium">
-          Welcome Back
-        </Text>
-
+    <SignInWrapper>
         <Controller
           control={control}
           name="email"
@@ -51,6 +45,7 @@ export default function SignIn() {
               error={errors.email?.message}
               keyboardType="email-address"
               autoCapitalize="none"
+              delaytime={100}
             />
           )}
         />
@@ -66,23 +61,24 @@ export default function SignIn() {
               onChange={onChange}
               error={errors.password?.message}
               secureTextEntry
+              delaytime={200}
             />
           )}
         />
 
         {error && <Text style={{ color: theme.colors.error }}>{error}</Text>}
 
-        <Button style={styles.buton} onPress={handleSubmit(onSubmit)} mode="contained">
-          Sign In
-        </Button>
-        <Button
-          style={styles.switch}
-          onPress={() => push(ROUTE_CONSTANTS.AUTH_PROTECTED.REGISTER)}
-          mode="text"
-        >
-          Don’t have an account? Sign Up
-        </Button>
-      </View>
-    </KeyboardAvoidingView>
+        <View className="flex w-full justify-between items-center">
+        <Animated.View entering={FadeInDown.delay(1100).duration(1000).springify()}>
+            <TouchableOpacity onPress={handleSubmit(onSubmit)} className='w-[100px] p-1 bg-[#000000] rounded-2xl mb-3'>
+                <Animated.Text className='text-sm font-bold text-white text-center'>
+                    Sign In
+                </Animated.Text>
+            </TouchableOpacity>
+        </Animated.View>
+
+        <Animated.Text className="text-black">Don't have an account? <Animated.Text onPress={() => push(ROUTE_CONSTANTS.AUTH_PROTECTED.REGISTER)} className='text-[#0062ff]'>Sign Up</Animated.Text></Animated.Text>
+        </View>
+    </SignInWrapper>
   );
 }
