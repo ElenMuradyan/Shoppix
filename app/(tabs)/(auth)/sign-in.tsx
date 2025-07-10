@@ -9,7 +9,7 @@ import { Text, useTheme } from "react-native-paper";
 import { handleSignIn } from "@/utils/auth_handlers/signin";
 import { emailRules, passwordRules } from "@/constants/auth/validation";
 import Animated, { FadeInDown } from "react-native-reanimated";
-import SignInWrapper from "./sign-in-wrapper";
+import SignInWrapper from "@/components/Form/sign-in-wrapper";
 
 type FormData = {
   email: string;

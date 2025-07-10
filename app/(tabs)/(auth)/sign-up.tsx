@@ -2,16 +2,15 @@ import { ROUTE_CONSTANTS } from "@/utils/routes";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { Text, Button, useTheme } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 import { useForm, Controller } from "react-hook-form";
 import { userDataType } from "@/types/slices/userSlice";
 import { ScrollView } from "react-native";
 import { handleSignUp } from "@/utils/auth_handlers/signup";
-import { styles } from "@/styles/signupStyles";
 import { FormInput } from "@/components/Form/FormInput";
 import { passwordRules } from "@/constants/auth/validation";
-import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
-import SignUpWrapper from "./sign-up-wrapper";
+import Animated, { FadeInDown } from "react-native-reanimated";
+import SignUpWrapper from "@/components/Form/sign-up-wrapper";
 
 export default function SignUp() {
     const { control, handleSubmit, formState: { errors } } = useForm<userDataType>({
