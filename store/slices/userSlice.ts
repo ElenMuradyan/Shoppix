@@ -1,5 +1,6 @@
 import { account, db } from "@/lib/appwrite";
 import { userDataSliceType, userDataType } from "@/types/slices/userSlice";
+import { restoreSession } from "@/utils/auth_handlers/refreshJWT";
 import { STORE_PATHS } from "@/utils/storePaths";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -15,14 +16,17 @@ const initialState: userDataSliceType = {
 export const fetchUserProfileInfo = createAsyncThunk<userDataType, void, { rejectValue: string }>(
     'data/fetchUserProfileInfo', 
     async (_, { rejectWithValue }) => {
-        try{
-            const session = await account.get();
-            const userId = session.$id;
+        try{           
+            const uid = await restoreSession();
+
+            if (!uid) {
+                return rejectWithValue('No valid session found. Please log in again.');
+            }
 
             const userDoc = await db.getDocument(
                 process.env.EXPO_PUBLIC_DB_ID!,
-                STORE_PATHS.USERS,
-                userId
+                process.env.EXPO_PUBLIC_DB_USERS_COL_ID!,
+                uid
             )
 
             return userDoc as unknown as userDataType;
@@ -41,19 +45,28 @@ const userProfileSlice = createSlice({
     },
     extraReducers:(promise) => {
         promise
-        .addCase(fetchUserProfileInfo.pending, (state, action) =>{
+        .addCase(fetchUserProfileInfo.pending, (state) =>{
             state.loading = true;
+
+            console.log('pend');
+            
         })
         .addCase(fetchUserProfileInfo.fulfilled, (state, action) =>{
             state.loading = false;
             state.authUserInfo.userData = action.payload;
             state.authUserInfo.isAuth = true;
+
+                        console.log('ful');
+
         })
         .addCase(fetchUserProfileInfo.rejected, (state, action) =>{
             state.loading = false;
             state.authUserInfo.isAuth = false;
             state.error = action.payload as string;
             state.authUserInfo.userData = null;
+
+            console.log('rej');
+
         })
     }
 })

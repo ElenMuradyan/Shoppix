@@ -1,5 +1,6 @@
-import { account } from "@/lib/appwrite";
+import { account, client } from "@/lib/appwrite";
 import { ROUTE_CONSTANTS } from "@/utils/routes";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 
 export async function handleSignIn(
@@ -10,7 +11,12 @@ export async function handleSignIn(
   try {
     setError(null);
     await account.createEmailPasswordSession(email, password);
-    router.push(ROUTE_CONSTANTS.HOME);
+
+    const jwt = await account.createJWT();
+    await AsyncStorage.setItem('appwrite_jwt', jwt.jwt);
+    client.setJWT(jwt.jwt);
+
+    router.replace(ROUTE_CONSTANTS.HOME);
   } catch (err: any) {
     console.error(err);
     if (err instanceof Error) {
