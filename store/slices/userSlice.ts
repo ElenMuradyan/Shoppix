@@ -1,7 +1,5 @@
 import { account, db } from "@/lib/appwrite";
 import { userDataSliceType, userDataType } from "@/types/slices/userSlice";
-import { restoreSession } from "@/utils/auth_handlers/refreshJWT";
-import { STORE_PATHS } from "@/utils/storePaths";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState: userDataSliceType = {
@@ -17,7 +15,9 @@ export const fetchUserProfileInfo = createAsyncThunk<userDataType, void, { rejec
     'data/fetchUserProfileInfo', 
     async (_, { rejectWithValue }) => {
         try{           
-            const uid = await restoreSession();
+            const user = await account.get();            
+            const uid = user.$id;
+console.log(uid);
 
             if (!uid) {
                 return rejectWithValue('No valid session found. Please log in again.');
@@ -66,6 +66,8 @@ const userProfileSlice = createSlice({
             state.authUserInfo.userData = null;
 
             console.log('rej');
+            console.log(action.payload);
+            
 
         })
     }

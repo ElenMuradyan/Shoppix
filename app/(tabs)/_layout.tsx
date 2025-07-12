@@ -13,6 +13,7 @@ import { fetchUserProfileInfo } from '@/store/slices/userSlice';
 import { useEffect } from 'react';
 import { Middleware } from '@/wrappers/Middleware';
 import { useJwtRefresh } from '@/utils/auth_handlers/cachingUser';
+import { initClientJWT } from '@/utils/auth_handlers/refreshJWT';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -24,9 +25,13 @@ export default function RootLayout() {
 
   useJwtRefresh();
 
-  useEffect(() => {    
-    dispatch(fetchUserProfileInfo());
-  }, [])
+  useEffect(() => {
+    async function initAuth() {
+      await initClientJWT();
+      dispatch(fetchUserProfileInfo());
+    }
+    initAuth();
+  }, [dispatch]);
 
   if (!loaded || loading) {
     return null;

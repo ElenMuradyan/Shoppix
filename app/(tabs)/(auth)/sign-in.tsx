@@ -10,6 +10,9 @@ import { handleSignIn } from "@/utils/auth_handlers/signin";
 import { emailRules, passwordRules } from "@/constants/auth/validation";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import SignInWrapper from "@/components/Form/sign-in-wrapper";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/store";
+import { fetchUserProfileInfo } from "@/store/slices/userSlice";
 
 type FormData = {
   email: string;
@@ -26,9 +29,16 @@ export default function SignIn() {
   const [error, setError] = useState<string | null>(null);
   const { push } = useRouter();
   const theme = useTheme();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const onSubmit = (data: FormData) => {
-    handleSignIn(data.email, data.password, setError);
+  const onSubmit = async (data: FormData) => {
+    setError(null);
+    try{
+      await handleSignIn(data.email, data.password);
+      dispatch(fetchUserProfileInfo());
+    }catch(err: any){
+      setError(err.message);
+    }
   };
 
   return (

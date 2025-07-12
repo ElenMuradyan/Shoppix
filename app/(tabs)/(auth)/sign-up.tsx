@@ -11,6 +11,9 @@ import { FormInput } from "@/components/Form/FormInput";
 import { passwordRules } from "@/constants/auth/validation";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import SignUpWrapper from "@/components/Form/sign-up-wrapper";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/store";
+import { fetchUserProfileInfo } from "@/store/slices/userSlice";
 
 export default function SignUp() {
     const { control, handleSubmit, formState: { errors } } = useForm<userDataType>({
@@ -27,17 +30,19 @@ export default function SignUp() {
         password: ""
         }
     });
+    const dispatch = useDispatch<AppDispatch>(); 
     const [error, setError] = useState<string | null>(null);
     const {push} = useRouter();
     const theme = useTheme();
 
     async function onSubmit(data: userDataType) {
-    const result = await handleSignUp(data);
-    if (result) {
-        setError(result);
-    } else {
-        push(ROUTE_CONSTANTS.HOME);
-    }
+        try{
+            await handleSignUp(data);
+            dispatch(fetchUserProfileInfo());
+            push(ROUTE_CONSTANTS.HOME);
+        }catch(err: any){
+            setError(err.message)
+        }
     }
 
     return (
