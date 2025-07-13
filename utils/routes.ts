@@ -1,10 +1,14 @@
 export const ROUTE_CONSTANTS = {
     AUTH_PROTECTED: {
-        LOGIN: "../(auth)/sign-in",
-        REGISTER: "../(auth)/sign-up",
+        LOGIN: "/sign-in",
+        REGISTER: "/sign-up",
     },
     NOT_AUTH_PROTECTED: {
         
     },
-    HOME: "/"
+    HOME: "/",
+    SEARCH: '/search',
+    CART: '/cart',
+    PROFILE: '/profile',
+    ORDERS: '/orders'
 } as const;

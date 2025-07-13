@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { store } from '@/store/store';
 import 'react-native-reanimated';
 import "../global.css";
+import { Middleware } from '@/wrappers/Middleware';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -21,7 +22,9 @@ export default function RootLayout() {
   return (
     <Provider store={store}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+              <Middleware>
         <Slot />
+              </Middleware>
         <StatusBar style="auto" />
       </ThemeProvider>
     </Provider>

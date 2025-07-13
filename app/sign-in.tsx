@@ -1,5 +1,4 @@
 import { FormInput } from "@/components/Form/FormInput";
-import { styles } from "@/styles/signupStyles";
 import { ROUTE_CONSTANTS } from "@/utils/routes";
 import { useRouter } from "expo-router";
 import { useState } from "react";

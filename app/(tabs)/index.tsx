@@ -1,16 +1,12 @@
-import { account, client } from "@/lib/appwrite";
-import { RootState } from "@/store/store";
+import { account } from "@/lib/appwrite";
 import { logout } from "@/utils/auth_handlers/logout";
 import { ROUTE_CONSTANTS } from "@/utils/routes";
 import { Link } from "expo-router";
 import { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-paper";
-import { useSelector } from "react-redux";
 
 export default function HomeScreen() {
-    const { loading, authUserInfo } = useSelector((state: RootState) => state.userData);
-
     useEffect(() => {
       async function getCurrent() {
         try {
