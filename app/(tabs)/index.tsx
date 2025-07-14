@@ -1,12 +1,17 @@
+import Categories from "@/components/Categories";
+import Hero from "@/components/Hero";
+import ProductList from "@/components/ProductItems/ProductList";
+import SearchBar from "@/components/Search";
+import { testProducts } from "@/data/products";
 import { account } from "@/lib/appwrite";
-import { logout } from "@/utils/auth_handlers/logout";
-import { ROUTE_CONSTANTS } from "@/utils/routes";
-import { Link } from "expo-router";
+import { RootState } from "@/store/store";
+import { styles } from "@/styles/signupStyles";
 import { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, ScrollView } from "react-native";
+import { useSelector } from "react-redux";
 
 export default function HomeScreen() {
+  const { userData } = useSelector((state: RootState) => state.userData.authUserInfo);
     useEffect(() => {
       async function getCurrent() {
         try {
@@ -20,26 +25,12 @@ export default function HomeScreen() {
     }, []);
         
   return (
-    <View
-      style={styles.view}
-    >
-      <Text className="text-yellow-700 dark:text-yellow-400">Home Page</Text>
-      <Link href={ROUTE_CONSTANTS.AUTH_PROTECTED.LOGIN}>
-            <Text className="text-blue-800 dark:text-amber-500">Go to Login</Text>
-      </Link>
-      <Button onPress={logout}>Logout</Button>
-    </View>
+    <ScrollView>
+      <SearchBar handleSearch={(val) => console.log(val)}/>
+      <Hero/>
+      <Categories />
+      {userData?.role === 'admin' && <Button title="+ Ավելացնել ապրանք"/>}
+      <ProductList products={testProducts}/>
+    </ScrollView>
   )
 }
-
-const styles = StyleSheet.create({
-  view: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      },
-  text: {
-    color: "white",
-    fontSize: 30,
-  }
-})

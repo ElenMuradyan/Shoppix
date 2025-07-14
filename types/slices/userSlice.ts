@@ -18,4 +18,5 @@ export type userDataType = {
   postIndex: string;
   homeIndex: string;
   password?: string;
+  role: string;
 }

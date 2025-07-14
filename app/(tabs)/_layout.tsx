@@ -4,14 +4,13 @@ import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import '../../global.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import { fetchUserProfileInfo } from '@/store/slices/userSlice';
 import { useEffect } from 'react';
 import { useJwtRefresh } from '@/utils/auth_handlers/cachingUser';
 import { initClientJWT } from '@/utils/auth_handlers/refreshJWT';
-import { AntDesign, Entypo, Feather, FontAwesome5, Ionicons } from '@expo/vector-icons';
+import { AntDesign, Entypo, FontAwesome5, Ionicons } from '@expo/vector-icons';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
