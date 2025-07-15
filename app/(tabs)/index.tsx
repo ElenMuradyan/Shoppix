@@ -8,16 +8,19 @@ import { RootState } from "@/store/store";
 import { ROUTE_CONSTANTS } from "@/utils/routes";
 import { Link } from "expo-router";
 import { useEffect } from "react";
-import { Button, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { useSelector } from "react-redux";
 
 export default function HomeScreen() {
   const { userData } = useSelector((state: RootState) => state.userData.authUserInfo);
+  const { products } = useSelector((state: RootState) => state.products);
     useEffect(() => {
       async function getCurrent() {
         try {
           const session = await account.getSession('current');
           console.log('Current session:', session);
+          console.log(products);
+          
         } catch (error: any) {
           console.warn('No current session:', error.message);
         }
@@ -31,7 +34,7 @@ export default function HomeScreen() {
       <Hero/>
       <Categories />
       {userData?.role === 'admin' && <Link style={styles.button} href={ROUTE_CONSTANTS.ADDPRODUCT}>+ Ավելացնել ապրանք</Link>}
-      <ProductList products={testProducts}/>
+      <ProductList products={products}/>
     </ScrollView>
   )
 }

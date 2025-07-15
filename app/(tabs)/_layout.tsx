@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import { useJwtRefresh } from '@/utils/auth_handlers/cachingUser';
 import { initClientJWT } from '@/utils/auth_handlers/refreshJWT';
 import { AntDesign, Entypo, FontAwesome5, Ionicons } from '@expo/vector-icons';
+import { fetchProducts } from '@/store/slices/productsSlice';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -26,6 +27,7 @@ export default function RootLayout() {
     async function initAuth() {
       await initClientJWT();
       dispatch(fetchUserProfileInfo());
+      dispatch(fetchProducts());
     }
     initAuth();
   }, [dispatch]);

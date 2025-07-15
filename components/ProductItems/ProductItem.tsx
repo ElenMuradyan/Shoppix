@@ -1,8 +1,9 @@
 import { ProductItemProps } from '@/types/Product/ProductItemProps';
+import { product } from '@/types/slices/productSlice';
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
-const ProductItem = ({ id, images, name, price, description, stock }: ProductItemProps) => {
+const ProductItem = ({ id, images, name, price, description, stock }: product) => {
   return (
     <TouchableOpacity style={styles.container} onPress={() => {}}>
       <View style={styles.imageWrapper}>

@@ -17,7 +17,6 @@ export const fetchUserProfileInfo = createAsyncThunk<userDataType, void, { rejec
         try{           
             const user = await account.get();            
             const uid = user.$id;
-console.log(uid);
 
             if (!uid) {
                 return rejectWithValue('No valid session found. Please log in again.');

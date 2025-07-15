@@ -206,7 +206,7 @@ const AddProduct = () => {
 
       <FormList errors={errors} control={control} setValue={setValue} getValues={getValues}/>
 
-      <TouchableOpacity style={{marginBottom: 400}} onPress={handleSubmit(onSubmit)}>
+      <TouchableOpacity onPress={handleSubmit(onSubmit)}>
         <Text>
         Ավելացնել
         </Text>
@@ -258,6 +258,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 4,
     },
+    submitButton: {
+        marginBottom: 50
+    }
 });
 
 export default AddProduct;
