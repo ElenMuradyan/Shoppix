@@ -10,5 +10,6 @@ export const ROUTE_CONSTANTS = {
     SEARCH: '/search',
     CART: '/cart',
     PROFILE: '/profile',
-    ORDERS: '/orders'
+    ORDERS: '/orders',
+    ADDPRODUCT: '/Product/create-product',
 } as const;

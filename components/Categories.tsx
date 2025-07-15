@@ -9,7 +9,7 @@ const Categories = () => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollContainer}
         >
-        {categories.map((item, index) => (
+        {Object.entries(categories).map(([key, item], index) => (
             <TouchableOpacity key={index} style={styles.itemContainer}>
             <View style={styles.iconCircle}>
                 {item.icon}

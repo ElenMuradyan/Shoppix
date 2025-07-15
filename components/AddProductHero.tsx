@@ -1,25 +1,22 @@
 import React from 'react';
 import { Button, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const Hero = () => {
+const AddProductHero = () => {
   return (
     <View style={styles.mainContainer}>
       <ImageBackground
-        source={require('@/assets/images/hero.png')}
+        source={require('@/assets/images/hero1.jpg')}
         style={styles.container}
         imageStyle={styles.imageStyle}
         resizeMode="cover"
       >
         <View style={styles.overlay}>
           <View style={styles.textCon}>
-            <Text style={styles.bigText}>Ամեն ինչ՝ տնից դուրս չգալով</Text>
+            <Text style={styles.bigText}>Ավելացրու քո ապրանքը հիմա</Text>
             <Text style={styles.subText}>
-              Ամենօրյա օգտագործման ապրանքներ՝ մատչելի գներով։{"\n"}
-              Խնայիր գումար՝ առանց որակը կորցնելու։
+            Ներկայացրու քո առաջարկը հազարավոր օգտատերերին։{"\n"}
+            Միացիր շուկային՝ մի քանի քլիքով։
             </Text>
-            <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Սկսել գնումները</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </ImageBackground>
@@ -27,7 +24,7 @@ const Hero = () => {
   );
 };
 
-export default Hero;
+export default AddProductHero;
 
 export const styles = StyleSheet.create({
   mainContainer: {
