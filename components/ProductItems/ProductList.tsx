@@ -1,9 +1,9 @@
 import React from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import ProductItem from './ProductItem';
-import { product } from '@/types/slices/productSlice';
+import { ProductItemProps } from '@/types/Product/ProductItemProps';
 
-const ProductList = ({ products }: { products: product[] }) => {
+const ProductList = ({ products }: { products: ProductItemProps[] }) => {
   return (
       <FlatList
         data={products}

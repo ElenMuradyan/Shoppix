@@ -1,21 +1,21 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { productsSliceType } from "@/types/slices/productSlice";
-import { product } from "@/types/slices/productSlice";
 import { db } from "@/lib/appwrite";
 import { Query } from "react-native-appwrite";
+import { ProductItemProps } from "@/types/Product/ProductItemProps";
 
 const initialState: productsSliceType = {
     loading: true,
     products: [],
 };
 
-export const fetchProducts = createAsyncThunk<product[]>(
+export const fetchProducts = createAsyncThunk<ProductItemProps[]>(
     "products/fetchProducts",
     async( _, { rejectWithValue }) => {
         try{
             const response = await db.listDocuments(
                 process.env.EXPO_PUBLIC_DB_ID!,
-                process.env.EXPO_PUBLIC_DB_PRODUCTSS_COL_ID!,
+                process.env.EXPO_PUBLIC_DB_PRODUCTS_COL_ID!,
                 [Query.limit(100)]
             )
 
@@ -29,9 +29,8 @@ export const fetchProducts = createAsyncThunk<product[]>(
                 category: doc.category,
                 subCategory: doc.subCategory,
                 options: JSON.parse(doc.options || "[]"),
-            }))
-                
-            return products as product[];
+            }))                
+            return products as ProductItemProps[];
         }catch(error: any){
             return rejectWithValue(error.message);
         }
@@ -53,12 +52,12 @@ const productsSlice = createSlice({
             state.products = [];
         })
         .addCase(fetchProducts.fulfilled, (state, action) => {
-            state.loading = false;
+            state.loading = false;            
             state.products = action.payload;
         })
-        .addCase(fetchProducts.rejected, (state) => {
-            state.loading = false;
-            state.products = [];
+        .addCase(fetchProducts.rejected, (state, action) => {
+            state.loading = false;            
+            state.products = [];            
         })
     }
 });

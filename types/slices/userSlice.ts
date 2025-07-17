@@ -20,4 +20,6 @@ export type userDataType = {
   password?: string;
   role: string;
   ID: string;
+  cartItems: string[];
+  orders: string[];
 }

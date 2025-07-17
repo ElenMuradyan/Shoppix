@@ -1,11 +1,17 @@
 import { ProductItemProps } from '@/types/Product/ProductItemProps';
-import { product } from '@/types/slices/productSlice';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
-const ProductItem = ({ id, images, name, price, description, stock }: product) => {
+const ProductItem = ({ id, images, name, price, description, stock }: ProductItemProps) => {
+    const router = useRouter();
+
+    const handlePress = () => {
+        router.push(`/Product/product-details/${id}`);
+    };
+
   return (
-    <TouchableOpacity style={styles.container} onPress={() => {}}>
+    <TouchableOpacity style={styles.container} onPress={handlePress}>
       <View style={styles.imageWrapper}>
         <Image source={{ uri: images[0] }} style={styles.image} resizeMode="cover" />
       </View>

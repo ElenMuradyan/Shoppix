@@ -12,11 +12,13 @@ import { useJwtRefresh } from '@/utils/auth_handlers/cachingUser';
 import { initClientJWT } from '@/utils/auth_handlers/refreshJWT';
 import { AntDesign, Entypo, FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { fetchProducts } from '@/store/slices/productsSlice';
+import { fetchCartItems } from '@/store/slices/cartItemsSlice';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const dispatch = useDispatch<AppDispatch>();
-  const { loading } = useSelector((state: RootState) => state.userData);
+  const { loading, authUserInfo: {userData} } = useSelector((state: RootState) => state.userData);
+  const { products } = useSelector((state: RootState) => state.products);
   const [loaded] = useFonts({
     SpaceMono: require('../../assets/fonts/SpaceMono-Regular.ttf'),
   });
@@ -26,11 +28,17 @@ export default function RootLayout() {
   useEffect(() => {
     async function initAuth() {
       await initClientJWT();
-      dispatch(fetchUserProfileInfo());
-      dispatch(fetchProducts());
+      await dispatch(fetchUserProfileInfo());
+      await dispatch(fetchProducts());      
     }
     initAuth();
   }, [dispatch]);
+
+  useEffect(() => {
+    if(userData){
+      dispatch(fetchCartItems({ids: userData.cartItems, products}));
+    }
+  }, [userData, products]);
 
   if (!loaded || loading) {
     return null;

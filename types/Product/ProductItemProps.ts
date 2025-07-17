@@ -1,5 +1,8 @@
 import { categories } from "@/constants/categories";
 import { Control, UseFormSetValue, UseFormGetValues, FieldErrors } from "react-hook-form";
+import { userDataType } from "../slices/userSlice";
+import { Dispatch } from "@reduxjs/toolkit";
+import { cartProduct } from "../slices/cartItemsSlice";
 
 export interface ProductItemProps {
   id: string;
@@ -27,3 +30,26 @@ export interface FormListProps {
 }
 
 export type category = keyof typeof categories;
+
+export interface related {
+    category: string | undefined,
+    subcategory: string | undefined,
+}
+
+export type selectedOptions = Record<string, string>;
+
+export type orderedProductInfo = {
+    stock: string,
+    options: selectedOptions,
+}
+
+export interface handleAddToCartInterface {
+    productInfo: ProductItemProps | null, 
+    choosenOptions: selectedOptions, 
+    setErrorMessage: (message: string) => void, 
+    orderedProductInfo: orderedProductInfo, 
+    userData: userDataType | null, 
+    productId: string | undefined, 
+    cartItems: cartProduct[],
+    dispatch: Dispatch
+}

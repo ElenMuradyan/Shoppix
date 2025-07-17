@@ -28,6 +28,8 @@ export async function handleSignUp(data: userDataType): Promise<string | null> {
         postIndex: data.postIndex.toString(),
         role: "user",
         ID: appwriteUserId,
+        cartItems: [],
+        orders: [],
       }
     );
     return null;

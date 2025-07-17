@@ -18,15 +18,14 @@ export default function HomeScreen() {
       async function getCurrent() {
         try {
           const session = await account.getSession('current');
-          console.log('Current session:', session);
-          console.log(products);
-          
+          console.log('Current session:', session);          
         } catch (error: any) {
           console.warn('No current session:', error.message);
         }
       }
       getCurrent();
     }, []);
+        console.log(userData);
         
   return (
     <ScrollView>

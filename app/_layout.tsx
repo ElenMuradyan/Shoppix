@@ -2,7 +2,7 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { Slot, Stack } from 'expo-router';
+import { Slot } from 'expo-router';
 import { Provider } from 'react-redux';
 import { store } from '@/store/store';
 import 'react-native-reanimated';
@@ -22,9 +22,9 @@ export default function RootLayout() {
   return (
     <Provider store={store}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-              <Middleware>
-                <Slot />
-              </Middleware>
+        <Middleware>
+          <Slot />
+        </Middleware>
         <StatusBar style="auto" />
       </ThemeProvider>
     </Provider>

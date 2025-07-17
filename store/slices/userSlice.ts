@@ -14,7 +14,7 @@ const initialState: userDataSliceType = {
 export const fetchUserProfileInfo = createAsyncThunk<userDataType, void, { rejectValue: string }>(
     'data/fetchUserProfileInfo', 
     async (_, { rejectWithValue }) => {
-        try{           
+        try{         
             const user = await account.get();            
             const uid = user.$id;
 
@@ -41,36 +41,29 @@ const userProfileSlice = createSlice({
        setIsAuth: (state, action) => {
             state.authUserInfo.isAuth = action.payload;
        },
+       setCartItems: (state, action) => {
+        if(state.authUserInfo.userData)
+            state.authUserInfo.userData.cartItems = [...state.authUserInfo.userData.cartItems, action.payload];
+        }
     },
     extraReducers:(promise) => {
         promise
         .addCase(fetchUserProfileInfo.pending, (state) =>{
-            state.loading = true;
-
-            console.log('pend');
-            
+            state.loading = true;            
         })
         .addCase(fetchUserProfileInfo.fulfilled, (state, action) =>{
-            state.loading = false;
+            state.loading = false;            
             state.authUserInfo.userData = action.payload;
             state.authUserInfo.isAuth = true;
-
-                        console.log('ful');
-
         })
         .addCase(fetchUserProfileInfo.rejected, (state, action) =>{
             state.loading = false;
             state.authUserInfo.isAuth = false;
             state.error = action.payload as string;
             state.authUserInfo.userData = null;
-
-            console.log('rej');
-            console.log(action.payload);
-            
-
         })
     }
 })
 
 export default userProfileSlice.reducer;
-export const { setIsAuth } = userProfileSlice.actions;
+export const { setIsAuth, setCartItems } = userProfileSlice.actions;
