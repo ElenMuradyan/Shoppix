@@ -9,7 +9,6 @@ import { handleChange } from "@/utils/stockValidator";
 import RelatedProducts from "@/components/ProductItems/RelatedProducts";
 import { handleAddToCart } from "@/utils/handlers/Product/handleAddToCart";
 import { fetchCartItems } from "@/store/slices/cartItemsSlice";
-import { fetchUserProfileInfo } from "@/store/slices/userSlice";
 // import BackButton from "../../components/shared/BackButton";
 
 export default function ProductDetails() {
@@ -26,7 +25,7 @@ export default function ProductDetails() {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  useEffect(() => { 
     if (productId) {
       dispatch(fetchProductInfo(productId));
     }

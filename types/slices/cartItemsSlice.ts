@@ -10,6 +10,7 @@ export interface cartProduct {
     cartItemId: string,
     maxStock: string,
     ordering: boolean,
+    index?: number,
 }
 
 export type cartItemsSliceType = {

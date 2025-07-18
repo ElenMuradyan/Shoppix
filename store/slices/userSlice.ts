@@ -41,10 +41,11 @@ const userProfileSlice = createSlice({
        setIsAuth: (state, action) => {
             state.authUserInfo.isAuth = action.payload;
        },
-       setCartItems: (state, action) => {
-        if(state.authUserInfo.userData)
-            state.authUserInfo.userData.cartItems = [...state.authUserInfo.userData.cartItems, action.payload];
-        }
+       setCartItemIds: (state, action) => {
+            if(state.authUserInfo.userData){
+                state.authUserInfo.userData.cartItems = [...action.payload];
+            }
+       }
     },
     extraReducers:(promise) => {
         promise
@@ -66,4 +67,4 @@ const userProfileSlice = createSlice({
 })
 
 export default userProfileSlice.reducer;
-export const { setIsAuth, setCartItems } = userProfileSlice.actions;
+export const { setIsAuth, setCartItemIds } = userProfileSlice.actions;

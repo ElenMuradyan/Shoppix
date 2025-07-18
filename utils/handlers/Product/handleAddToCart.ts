@@ -1,9 +1,7 @@
 import { db } from "@/lib/appwrite";
-import { setCartItems } from "@/store/slices/userSlice";
-import { AppDispatch } from "@/store/store";
+import { setCartItemIds } from "@/store/slices/userSlice";
 import { handleAddToCartInterface, optionType } from "@/types/Product/ProductItemProps";
 import { ID } from "react-native-appwrite";
-import { useDispatch } from "react-redux";
 
 export const handleAddToCart = async ({productInfo, choosenOptions, setErrorMessage, orderedProductInfo, userData, productId, cartItems, dispatch} : handleAddToCartInterface) => {
     const allOptionsSelected = productInfo?.options?.every(
@@ -66,7 +64,7 @@ export const handleAddToCart = async ({productInfo, choosenOptions, setErrorMess
                 }
             );
 
-            dispatch(setCartItems(id));
+            dispatch(setCartItemIds([...userData.cartItems, id]));
         }
     } catch (error: any) {
         console.error("Add to cart error:", error);

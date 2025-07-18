@@ -12,7 +12,8 @@ const initialState: cartItemsSliceType = {
 export const fetchCartItems = createAsyncThunk<cartProduct[], {ids: string[], products: ProductItemProps[]}>(
     "products/fetchCartItems",
     async({ids, products}, { rejectWithValue }) => {
-        try{
+        try{console.log('cart');
+        
         const cartItems = await Promise.all(ids.map(async (id) => {
             const cartProductData = await db.getDocument(
                 process.env.EXPO_PUBLIC_DB_ID!,
@@ -51,6 +52,12 @@ const cartItemsSlice = createSlice({
         changeLoading: (state, action) => {
             state.loading = action.payload;
         },
+        setOrdering: (state, action) => {            
+            state.cartItems[action.payload.index].ordering = action.payload.ordering;
+        },
+        setCartItems: (state, action) => { 
+            state.cartItems = [...action.payload];
+        },
     },
     extraReducers:(builder) => {
         builder
@@ -60,7 +67,7 @@ const cartItemsSlice = createSlice({
         })
         .addCase(fetchCartItems.fulfilled, (state, action) => {
             state.loading = false;
-            state.cartItems = action.payload;
+            state.cartItems = [...action.payload];
         })
         .addCase(fetchCartItems.rejected, (state, action) => {
             state.loading = false;
@@ -69,5 +76,5 @@ const cartItemsSlice = createSlice({
     }
 });
 
-export const { changeLoading } = cartItemsSlice.actions;
+export const { changeLoading, setCartItems, setOrdering } = cartItemsSlice.actions;
 export default cartItemsSlice.reducer;

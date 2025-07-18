@@ -1,4 +1,5 @@
 export const handleChange = (text: string, setStock: (val: string) => void, setErrorMessage: (val: string) => void, max: number) => {
+    setErrorMessage('');
     if (/^\d*$/.test(text)) {
         const num = Number(text);
 
