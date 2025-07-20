@@ -1,3 +1,4 @@
+import { ENV } from "@/constants/env";
 import { db } from "@/lib/appwrite";
 import { setCartItems, setOrdering } from "@/store/slices/cartItemsSlice";
 import { setCartItemIds } from "@/store/slices/userSlice";
@@ -24,14 +25,14 @@ export const handleDeleteCartItem = async ({
     dispatch(setCartItems(updatedCart));
 
     await db.deleteDocument(
-      process.env.EXPO_PUBLIC_DB_ID!,
-      process.env.EXPO_PUBLIC_DB_CARTITEMS_COL_ID!,
+      ENV.DB_ID,
+      ENV.DB_CART_ITEMS_COL_ID,
       cartItemId
     );
 
     await db.updateDocument(
-      process.env.EXPO_PUBLIC_DB_ID!,
-      process.env.EXPO_PUBLIC_DB_USERS_COL_ID!,
+      ENV.DB_ID,
+      ENV.DB_USERS_COL_ID,
       userData.ID,
       {
         cartItems: updatedCartItemsIndexes,
@@ -51,8 +52,8 @@ export const handleAddToOrder = async ({cartItemId, userData, dispatch, index, o
             }));
 
             await db.updateDocument(
-                process.env.EXPO_PUBLIC_DB_ID!,
-                process.env.EXPO_PUBLIC_DB_CARTITEMS_COL_ID!,
+                ENV.DB_ID,
+                ENV.DB_CART_ITEMS_COL_ID,
                 cartItemId,
                 {
                 ordering: !ordering,
@@ -70,8 +71,8 @@ export const handleStockChange = async ({cartItemId, userData, setLoading, input
             setLoading(true);
 
             await db.updateDocument(
-                process.env.EXPO_PUBLIC_DB_ID!,
-                process.env.EXPO_PUBLIC_DB_CARTITEMS_COL_ID!,
+                ENV.DB_ID,
+                ENV.DB_CART_ITEMS_COL_ID,
                 cartItemId,
                 {
                     stock: inputValue

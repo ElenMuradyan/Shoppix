@@ -1,9 +1,10 @@
+import { ENV } from "@/constants/env";
 import { Account, Client, Databases, Storage } from "react-native-appwrite";
 
 export const client = new Client()
-    .setEndpoint(process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!)
-    .setProject(process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!)
-    .setPlatform(process.env.EXPO_PUBLIC_APPWRITE_PLATFORM!);
+    .setEndpoint(ENV.APPWRITE_ENDPOINT)
+    .setProject(ENV.APPWRITE_PROJECT_ID)
+    .setPlatform(ENV.APPWRITE_PLATFORM);
 
 export const account = new Account(client);
 export const db = new Databases(client);

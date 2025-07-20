@@ -3,6 +3,7 @@ import { productsSliceType } from "@/types/slices/productSlice";
 import { db } from "@/lib/appwrite";
 import { Query } from "react-native-appwrite";
 import { ProductItemProps } from "@/types/Product/ProductItemProps";
+import { ENV } from "@/constants/env";
 
 const initialState: productsSliceType = {
     loading: true,
@@ -14,8 +15,8 @@ export const fetchProducts = createAsyncThunk<ProductItemProps[]>(
     async( _, { rejectWithValue }) => {
         try{
             const response = await db.listDocuments(
-                process.env.EXPO_PUBLIC_DB_ID!,
-                process.env.EXPO_PUBLIC_DB_PRODUCTS_COL_ID!,
+                ENV.DB_ID,
+                ENV.DB_PRODUCTS_COL_ID,
                 [Query.limit(100)]
             )
 

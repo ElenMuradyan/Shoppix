@@ -1,3 +1,4 @@
+import { ENV } from "@/constants/env";
 import { db } from "@/lib/appwrite";
 import { handleOrderInterface } from "@/types/handleOrderInterface";
 import { Query } from "react-native-appwrite";
@@ -17,8 +18,8 @@ export const handleOrder = async ({
     const productIds = Object.keys(stocks);
 
     const productDocs = await db.listDocuments(
-      process.env.EXPO_PUBLIC_DB_ID!,
-      process.env.EXPO_PUBLIC_DB_PRODUCTS_COL_ID!,
+      ENV.DB_ID,
+      ENV.DB_PRODUCTS_COL_ID,
       productIds.map((id) => Query.equal("$id", id))
     );
 

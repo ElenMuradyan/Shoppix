@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { db } from "@/lib/appwrite";
 import { ID } from "react-native-appwrite";
+import { ENV } from "@/constants/env";
 
 const AddProduct = () => {
   const [imageUrls, setImageUrls] = useState<string[]>([]);
@@ -53,8 +54,8 @@ const AddProduct = () => {
     const id = ID.unique();
     try {
         await db.createDocument(
-        process.env.EXPO_PUBLIC_DB_ID!,
-        process.env.EXPO_PUBLIC_DB_PRODUCTS_COL_ID!,
+        ENV.APPWRITE_ENDPOINT,
+        ENV.DB_PRODUCTS_COL_ID,
         id,
         {
             name: data.name,

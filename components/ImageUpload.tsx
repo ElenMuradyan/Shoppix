@@ -13,6 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { ID } from 'react-native-appwrite';
 import { storage } from '@/lib/appwrite';
 import mime from 'mime/lite';
+import { ENV } from '@/constants/env';
 
 export interface ImageUploadProps {
   onFinish: (url: string) => void;
@@ -44,7 +45,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onFinish, handleDelete }) => 
         const fileName = asset.fileName ?? `image-${Date.now()}.jpg`;
 
         const uploaded = await storage.createFile(
-          process.env.EXPO_PUBLIC_BUCKET_ID!,
+          ENV.BUCKET_ID,
           ID.unique(),
           {
             name: fileName,
@@ -54,7 +55,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onFinish, handleDelete }) => 
           }
         );
 
-        const previewUrl = `${process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${process.env.EXPO_PUBLIC_BUCKET_ID}/files/${uploaded.$id}/view?project=${process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID}`;
+        const previewUrl = `${ENV.APPWRITE_ENDPOINT}/storage/buckets/${ENV.BUCKET_ID}/files/${uploaded.$id}/view?project=${ENV.APPWRITE_PROJECT_ID}`;
 
         setImages((prev) => [...prev, previewUrl]);
         onFinish(previewUrl);
@@ -71,7 +72,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onFinish, handleDelete }) => 
       const fileId = url.split('/').pop()?.split('?')[0];
       if (!fileId) return;
 
-      await storage.deleteFile(process.env.EXPO_PUBLIC_BUCKET_ID!, fileId);
+      await storage.deleteFile(ENV.BUCKET_ID, fileId);
       setImages((prev) => prev.filter((img) => img !== url));
       handleDelete?.(url);
       Alert.alert('Ջնջված է', 'Նկարը հաջողությամբ ջնջվել է։');

@@ -2,6 +2,7 @@ import { account, client, db } from "@/lib/appwrite";
 import { ID } from "react-native-appwrite";
 import { userDataType } from "@/types/slices/userSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ENV } from "@/constants/env";
 
 export async function handleSignUp(data: userDataType): Promise<string | null> {
   const {password, ...rest} = data;
@@ -20,8 +21,8 @@ export async function handleSignUp(data: userDataType): Promise<string | null> {
     console.log("Authenticated user:", session);
 
     await db.createDocument(
-      process.env.EXPO_PUBLIC_DB_ID!,
-      process.env.EXPO_PUBLIC_DB_USERS_COL_ID!,
+      ENV.DB_ID,
+      ENV.DB_USERS_COL_ID,
       appwriteUserId,
       {
         ...rest,

@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "@/lib/appwrite";
 import { productInitialValue } from "@/types/slices/productSlice";
 import { ProductItemProps } from "@/types/Product/ProductItemProps";
+import { ENV } from "@/constants/env";
 
 const initialState: productInitialValue = {
     loading: true,
@@ -13,8 +14,8 @@ export const fetchProductInfo = createAsyncThunk(
     async(id :string, { rejectWithValue }) => {
         try{
             const doc = await db.getDocument(
-                process.env.EXPO_PUBLIC_DB_ID!,
-                process.env.EXPO_PUBLIC_DB_PRODUCTS_COL_ID!,
+                ENV.DB_ID,
+                ENV.DB_PRODUCTS_COL_ID,
                 id
             );
 

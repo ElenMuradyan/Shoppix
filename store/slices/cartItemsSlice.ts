@@ -3,6 +3,7 @@ import { db } from "@/lib/appwrite";
 import { cartItemsSliceType , cartProduct } from "@/types/slices/cartItemsSlice";
 import ProductItem from "@/components/ProductItems/ProductItem";
 import { ProductItemProps } from "@/types/Product/ProductItemProps";
+import { ENV } from "@/constants/env";
 
 const initialState: cartItemsSliceType = {
     loading: true,
@@ -16,8 +17,8 @@ export const fetchCartItems = createAsyncThunk<cartProduct[], {ids: string[], pr
         
         const cartItems = await Promise.all(ids.map(async (id) => {
             const cartProductData = await db.getDocument(
-                process.env.EXPO_PUBLIC_DB_ID!,
-                process.env.EXPO_PUBLIC_DB_CARTITEMS_COL_ID!,
+                ENV.DB_ID,
+                ENV.DB_CART_ITEMS_COL_ID,
                 id
             );
 

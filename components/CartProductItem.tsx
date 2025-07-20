@@ -8,6 +8,7 @@ import { handleAddToOrder, handleDeleteCartItem, handleStockChange } from "@/uti
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { handleChange } from "@/utils/stockValidator";
 import { cartProduct } from "@/types/slices/cartItemsSlice";
+import { ROUTE_CONSTANTS } from "@/utils/routes";
 
 const CartProductItem: React.FC<cartProduct> = ({
   productId,
@@ -41,7 +42,7 @@ const CartProductItem: React.FC<cartProduct> = ({
           <Text>{ordering ? "✓" : " "}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => router.replace(`/Product/product-details/${productId}`)}>
+        <TouchableOpacity onPress={() => router.replace(`${ROUTE_CONSTANTS.PRODUCTDETAILS}/${productId}`)}>
           <Image source={{ uri: image }} style={styles.image} />
         </TouchableOpacity>
 

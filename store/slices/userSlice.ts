@@ -1,3 +1,4 @@
+import { ENV } from "@/constants/env";
 import { account, db } from "@/lib/appwrite";
 import { userDataSliceType, userDataType } from "@/types/slices/userSlice";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
@@ -23,8 +24,8 @@ export const fetchUserProfileInfo = createAsyncThunk<userDataType, void, { rejec
             }
 
             const userDoc = await db.getDocument(
-                process.env.EXPO_PUBLIC_DB_ID!,
-                process.env.EXPO_PUBLIC_DB_USERS_COL_ID!,
+                ENV.DB_ID,
+                ENV.DB_USERS_COL_ID,
                 uid
             )
 

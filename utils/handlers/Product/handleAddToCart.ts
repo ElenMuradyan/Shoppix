@@ -1,3 +1,4 @@
+import { ENV } from "@/constants/env";
 import { db } from "@/lib/appwrite";
 import { setCartItemIds } from "@/store/slices/userSlice";
 import { handleAddToCartInterface, optionType } from "@/types/Product/ProductItemProps";
@@ -28,8 +29,8 @@ export const handleAddToCart = async ({productInfo, choosenOptions, setErrorMess
             } 
             console.log((Number(existingItem.stock) + Number(orderedProductInfo.stock)).toString())
             await db.updateDocument(
-                process.env.EXPO_PUBLIC_DB_ID!,
-                process.env.EXPO_PUBLIC_DB_CARTITEMS_COL_ID!,
+                ENV.DB_ID,
+                ENV.DB_CART_ITEMS_COL_ID,
                 existingItem.cartItemId,
                 {
                     stock: (Number(existingItem.stock) + Number(orderedProductInfo.stock)).toString(),
@@ -49,15 +50,15 @@ export const handleAddToCart = async ({productInfo, choosenOptions, setErrorMess
             };
             
             await db.createDocument(
-                process.env.EXPO_PUBLIC_DB_ID!,
-                process.env.EXPO_PUBLIC_DB_CARTITEMS_COL_ID!,
+                ENV.DB_ID,
+                ENV.DB_CART_ITEMS_COL_ID,
                 id,
                 cartItem
             );
 
             await db.updateDocument(
-                process.env.EXPO_PUBLIC_DB_ID!,
-                process.env.EXPO_PUBLIC_DB_USERS_COL_ID!,
+                ENV.DB_ID,
+                ENV.DB_USERS_COL_ID,
                 userData.ID,
                 {
                     cartItems: [...userData.cartItems, id],
