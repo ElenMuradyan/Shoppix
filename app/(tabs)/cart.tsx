@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-// import { handleOrder } from "../../utilis/helpers/handleOrder";
-// import CardTotal from "../../components/sheard/CardTotal";
 import CartProductList from "@/components/CartProductList";
 import { AppDispatch, RootState } from "@/store/store";
 import { fetchCartItems } from "@/store/slices/cartItemsSlice";
+import { handleOrder } from "@/utils/cart/handleOrder";
+import CardTotal from "@/components/CardTotal";
+import { useRouter } from "expo-router";
+import { ROUTE_CONSTANTS } from "@/utils/routes";
 
 const Cart = () => {
-  const navigation = useNavigation();
   const dispatch = useDispatch<AppDispatch>();
   const { authUserInfo: {userData}} = useSelector((state: RootState) => state.userData);
   const { products } = useSelector((state: RootState) => state.products);
-
+  const { cartItems } = useSelector((state: RootState) => state.cartItems);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (userData && products) {
@@ -22,21 +24,29 @@ const Cart = () => {
     }
   }, [userData, products]);
 
+    const handleGoToOrder = async () => {
+      try{
+          setLoading(true);
+          handleOrder({ cart: cartItems, setErrorMessage });
+          router.replace(`..${ROUTE_CONSTANTS.PLACEORDER}`);
+      }catch(err: any) {
+        console.log(err.message);
+      }finally{
+        setLoading(false);
+      }
+    }
+  
   return (
       <ScrollView style={styles.container}>
           <Text style={styles.titleContainer}>ՁԵՐ ԶԱՄԲՅՈՒՂԸ</Text>
         <CartProductList />
         <View style={styles.bottomContainer}>
           <View style={styles.cardTotalContainer}>
-            {/* <CardTotal /> */}
+            <CardTotal />
             <TouchableOpacity
-            //   disabled={loading}
-              onPress={() =>{}
-                // handleOrder({ cart, navigate: navigation, setErrorMessage })
-              }
+              onPress={handleGoToOrder}
               style={[
                 styles.orderButton,
-                // loading && { opacity: 0.5 },
               ]}
             >
               <Text style={styles.orderButtonText}>GO TO ORDER PAGE</Text>

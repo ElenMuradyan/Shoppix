@@ -12,4 +12,5 @@ export const ROUTE_CONSTANTS = {
     PROFILE: '/profile',
     ORDERS: '/orders',
     ADDPRODUCT: '/Product/create-product',
+    PLACEORDER: '/Placeorder',
 } as const;
