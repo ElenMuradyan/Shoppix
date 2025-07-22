@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
@@ -8,8 +8,14 @@ import { handleAddToOrder, handleDeleteCartItem, handleStockChange } from "@/uti
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { handleChange } from "@/utils/stockValidator";
 import { cartProduct } from "@/types/slices/cartItemsSlice";
+import { Swipeable } from 'react-native-gesture-handler';
 
-const CartProductItem: React.FC<cartProduct> = ({
+interface Props extends cartProduct {
+  index: number;
+  onSwipeOpen: (ref: Swipeable) => void;
+}
+
+const CartProductItem: React.FC<Props> = ({
   productId,
   image,
   name,
@@ -19,7 +25,8 @@ const CartProductItem: React.FC<cartProduct> = ({
   ordering,
   returnable,
   cartItemId,
-  index
+  index,
+  onSwipeOpen
 }) => {
   const { userData } = useSelector((state: RootState) => state.userData.authUserInfo);
   const { cartItems } = useSelector((state: RootState) => state.cartItems);
@@ -30,15 +37,41 @@ const CartProductItem: React.FC<cartProduct> = ({
   const router = useRouter();
   const [orderedStock, setOrderedStock] = useState<string>(stock);
   const [errorMessage, setErrorMessage] = useState("");
+  const swipeableRef = useRef<Swipeable>(null);
+
+  const renderRightActions = () => (
+    <TouchableOpacity
+      onPress={() =>
+        handleDeleteCartItem({
+          cartItemId,
+          userData,
+          appDispatch: dispatch,
+          dispatch,
+          cart: cartItems
+        })
+      }
+      style={{ padding: 8, height: '100%', display: 'flex', alignContent: 'center', justifyContent: 'center' }}
+    >
+        <MaterialIcons name="delete" size={24} color="red" />
+    </TouchableOpacity>
+);
 
   return (
+    <Swipeable 
+        renderRightActions={renderRightActions}
+        ref={swipeableRef}
+        onSwipeableWillOpen={() => {
+            onSwipeOpen(swipeableRef.current!);
+        }}
+
+    >
     <View style={styles.container}>
       <View style={styles.row}>
         <TouchableOpacity
           style={styles.checkbox}
           onPress={() => handleAddToOrder({ cartItemId, dispatch, userData, index, ordering })}
         >
-          <Text>{ordering ? "✓" : " "}</Text>
+            <Text>{ordering ? "✓" : " "}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => router.push(`/Product/product-details/${productId}`)}>
@@ -84,24 +117,11 @@ const CartProductItem: React.FC<cartProduct> = ({
           placeholder="Enter quantity"
         />
         {
-            errorMessage && <Text style={{color: 'red'}}>{errorMessage}</Text>
+            !!errorMessage && <Text style={{color: 'red'}}>{errorMessage}</Text>
         }
       </View>
-
-      <TouchableOpacity onPress={() =>
-        handleDeleteCartItem({
-          cartItemId,
-          userData,
-          appDispatch: dispatch,
-          dispatch,
-          cart: cartItems
-        })
-      }
-      style={{ padding: 8 }}
-      >
-        <MaterialIcons name="delete" size={24} color="black" />
-      </TouchableOpacity>
     </View>
+    </Swipeable>
   );
 };
 
@@ -110,25 +130,25 @@ export default CartProductItem;
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 16,
-    paddingHorizontal: 12,
+    paddingHorizontal: 5,
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: "#E5E7EB", // light gray
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: 12,
+    gap: 5,
     backgroundColor: "#FFFFFF",
   },
   row: {
     flexDirection: "row",
     alignItems: "center",
     flex: 4,
-    gap: 12,
+    gap: 5,
   },
   checkbox: {
-    width: 24,
-    height: 24,
+    width: 14,
+    height: 14,
     borderWidth: 2,
     borderColor: "#6B7280", // gray-500
     borderRadius: 4,
@@ -152,7 +172,7 @@ const styles = StyleSheet.create({
     color: "#111827", // gray-900
   },
   priceOptions: {
-    flexDirection: "row",
+    flexDirection: "column",
     flexWrap: "wrap",
     gap: 6,
     marginTop: 4,

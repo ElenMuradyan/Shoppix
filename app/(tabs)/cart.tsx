@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { useSelector } from "react-redux";
 import CartProductList from "@/components/CartProductList";
@@ -7,11 +7,25 @@ import CardTotal from "@/components/CardTotal";
 import { ROUTE_CONSTANTS } from "@/utils/routes";
 import { handleOrder } from "@/utils/handlers/cart_handlers/handleOrder";
 import { navigate } from "expo-router/build/global-state/routing";
+import { State, Swipeable, TapGestureHandler } from "react-native-gesture-handler";
 
 const Cart = () => {
   const { cartItems } = useSelector((state: RootState) => state.cartItems);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
+  const openSwipeableRef = useRef<Swipeable | null>(null);
+
+  const handleCloseSwipeable = () => {
+    openSwipeableRef.current?.close();
+    openSwipeableRef.current = null;
+  };
+
+  const handleOpenSwipeable = (ref: Swipeable) => {
+    if (openSwipeableRef.current && openSwipeableRef.current !== ref) {
+      openSwipeableRef.current.close();
+    }
+    openSwipeableRef.current = ref;
+  };
 
     const handleGoToOrder = async () => {
       try{
@@ -26,9 +40,17 @@ const Cart = () => {
     }
   
   return (
-      <ScrollView style={styles.container}>
+    <ScrollView>
+    <TapGestureHandler
+    onHandlerStateChange={({ nativeEvent }) => {
+      if (nativeEvent.state === State.END) {
+        handleCloseSwipeable();
+      }
+    }}
+  >
+      <View style={styles.container}>
           <Text style={styles.titleContainer}>ՁԵՐ ԶԱՄԲՅՈՒՂԸ</Text>
-        <CartProductList />
+        <CartProductList onSwipeOpen={handleOpenSwipeable}/>
         <View style={styles.bottomContainer}>
           <View style={styles.cardTotalContainer}>
             <CardTotal />
@@ -45,6 +67,8 @@ const Cart = () => {
             )}
           </View>
         </View>
+      </View>
+      </TapGestureHandler>
       </ScrollView>
   );
 };

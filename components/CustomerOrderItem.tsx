@@ -11,11 +11,12 @@ import { ROUTE_CONSTANTS } from "@/utils/routes";
 import { AppDispatch, RootState } from "@/store/store";
 import { order } from "@/types/slices/ordersSlice";
 import { navigate } from "expo-router/build/global-state/routing";
+import OrderProductItem from "./OrderProduct";
 
 const OrderComponent = ({ order }: { order: order }) => {
   const { userOrders } = useSelector((state: RootState) => state.userOrders);
   const dispatch = useDispatch<AppDispatch>();
-  const { id, address, status, cartProducts, totalPrice, returnedItemsDetails } = order;
+  const { id, date, address, status, cartProducts, totalPrice, returnedItemsDetails } = order;
 
   const orderInfo = orderStatuses[status as string];
   const [modalOpen, setModalOpen] = useState(false);
@@ -62,8 +63,8 @@ console.log(cartProducts);
       </Modal>
 
       <View style={styles.header}>
-        {/* <Text style={styles.date}>{new Date(orderDate).toLocaleDateString()}</Text> */}
-        <Text style={styles.price}>{totalPrice} AMD</Text>
+        <Text style={styles.date}>{date.slice(0, 10)}</Text>
+        <Text style={styles.price}>{totalPrice} Դ</Text>
       </View>
 
       <View style={[styles.statusBox, { backgroundColor: orderInfo?.color || "#fff" }]}>
@@ -75,24 +76,14 @@ console.log(cartProducts);
         📍 {Object.values(address).join(", ")}
       </Text>
 
-      <ScrollView style={styles.productsContainer}>
-        {cartProducts.map((product, index) => (
-          <TouchableOpacity key={index} onPress={() => navigate(`/Product/product-details/${product.productId}`)}>
-            <View style={styles.productBox}>
-              <Image source={{ uri: product.image }} style={styles.productImage} />
-              <View style={styles.productInfo}>
-                <Text style={styles.productName}>{product.name}</Text>
-                <View style={styles.productDetails}>
-                  <Text style={styles.productPrice}>{product.price} AMD</Text>
-                  <Text>Quantity: {product.stock}</Text>
-                  {product.options && Object.entries(product.options).map(([key, value], idx) => (
-                    <Text key={idx} style={styles.optionTag}>{`${cartNames[key]}: ${value}`}</Text>
-                  ))}
-                </View>
-              </View>
-            </View>
-          </TouchableOpacity>
-        ))}
+      <ScrollView 
+      horizontal 
+      style={styles.productsContainer}
+      contentContainerStyle={{ flexDirection: 'row', gap: 12, width: '100%' }}
+      >
+        {
+            cartProducts.map((item) => <OrderProductItem product={item}/>)
+        }
       </ScrollView>
 
       {status === 'sentOrders' && (
@@ -132,7 +123,7 @@ console.log(cartProducts);
 };
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: "#fff", padding: 16, marginBottom: 16, borderRadius: 12, elevation: 2 },
+  container: { backgroundColor: "#fff", padding: 16, marginBottom: 16, borderRadius: 12, elevation: 2, display: 'flex', gap: 15 },
   modalContent: { backgroundColor: "#fff", padding: 20, borderRadius: 10, alignItems: "center" },
   modalText: { fontSize: 16, fontWeight: "600", marginBottom: 16 },
   modalButtons: { flexDirection: "row", gap: 10 },
@@ -163,3 +154,24 @@ const styles = StyleSheet.create({
 });
 
 export default OrderComponent;
+
+
+/*
+        {cartProducts.map((product, index) => (
+          <TouchableOpacity key={index} onPress={() => navigate(`/Product/product-details/${product.productId}`)}>
+            <View style={styles.productBox}>
+              <Image source={{ uri: product.image }} style={styles.productImage} />
+              <View style={styles.productInfo}>
+                <Text style={styles.productName}>{product.name}</Text>
+                <View style={styles.productDetails}>
+                  <Text style={styles.productPrice}>{product.price} AMD</Text>
+                  <Text>Quantity: {product.stock}</Text>
+                  {product.options && Object.entries(product.options).map(([key, value], idx) => (
+                    <Text key={idx} style={styles.optionTag}>{`${cartNames[key]}: ${value}`}</Text>
+                  ))}
+                </View>
+              </View>
+            </View>
+          </TouchableOpacity>
+        ))}
+*/

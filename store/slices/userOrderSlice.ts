@@ -21,6 +21,7 @@ export const fetchUserOrders = createAsyncThunk<order[], {ids: string[]}>(
             const cartProducts = orderData.cartProducts.map((item: string) => JSON.parse(item));
 
             return ({
+                date: orderData.$createdAt,
                 id: orderData.$id,
                 address: JSON.parse(orderData.address),
                 status: orderData.status,

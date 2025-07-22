@@ -8,6 +8,7 @@ import { store } from '@/store/store';
 import 'react-native-reanimated';
 import "../global.css";
 import { Middleware } from '@/wrappers/Middleware';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -23,7 +24,9 @@ export default function RootLayout() {
     <Provider store={store}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Middleware>
+          <GestureHandlerRootView style={{ flex: 1 }}>
           <Slot />
+          </GestureHandlerRootView>
         </Middleware>
         <StatusBar style="auto" />
       </ThemeProvider>

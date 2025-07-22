@@ -3,38 +3,28 @@ import { useSelector } from "react-redux";
 import { FlatList, View, StyleSheet } from "react-native";
 import { RootState } from "@/store/store";
 import CartProductItem from "./CartProductItem";
+import { Swipeable, TapGestureHandler } from "react-native-gesture-handler";
 
-const CartProductList = () => {
+const CartProductList = ({onSwipeOpen}: {onSwipeOpen: (ref: Swipeable) => void}) => {
   const { cartItems } = useSelector((state: RootState) => state.cartItems);
   const reversedCart = [...cartItems].reverse();
 
   return (
+    <TapGestureHandler>
     <View style={styles.container}>
       <FlatList
         data={reversedCart}
         keyExtractor={(item, index) => item.cartItemId || index.toString()}
-        renderItem={({ item }) => {
-          const { productId, returnable, stock, userID, image, price, name, options, ordering, cartItemId } = item;
-
-          return (
-            <CartProductItem
-              cartItemId={cartItemId}
-              productId={productId}
-              image={image}
-              name={name}
-              price={price}
-              stock={stock}
-              options={options}
-              ordering={ordering}
-              returnable={returnable}
-              userID={userID}
-              index={cartItems.indexOf(item)}
+        renderItem={({ item }) => (
+            <CartProductItem 
+            {...item} 
+            index={cartItems.indexOf(item)} 
+            onSwipeOpen={onSwipeOpen}
             />
-          );
-        }}
-        contentContainerStyle={{ gap: 24 }}
-      />
+        )}
+        contentContainerStyle={{ gap: 24 }}/>
     </View>
+    </TapGestureHandler>
   );
 };
 

@@ -10,6 +10,7 @@ export type order = {
     totalPrice: string,
     userName: string,
     userPhone: string,
+    date: string,
     userEmail: string,
     userId: string,
     returnedItemsDetails?: returnedItemsType | null,
