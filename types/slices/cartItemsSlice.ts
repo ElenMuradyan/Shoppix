@@ -10,6 +10,7 @@ export interface cartProduct {
     price: string,
     name: string,
     userID: string,
+    returnable: boolean;
     index?: number,
 }
 

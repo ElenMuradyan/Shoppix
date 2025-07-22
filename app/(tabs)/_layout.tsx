@@ -13,6 +13,7 @@ import { initClientJWT } from '@/utils/handlers/auth_handlers/refreshJWT';
 import { AntDesign, Entypo, FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { fetchProducts } from '@/store/slices/productsSlice';
 import { fetchCartItems } from '@/store/slices/cartItemsSlice';
+import { fetchUserOrders } from '@/store/slices/userOrderSlice';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -29,13 +30,14 @@ export default function RootLayout() {
     async function initAuth() {
       await initClientJWT();
       await dispatch(fetchUserProfileInfo());
-      await dispatch(fetchProducts());      
+      await dispatch(fetchProducts());
     }
     initAuth();
   }, [dispatch]);
 
   useEffect(() => {
     if(userData){
+      dispatch(fetchUserOrders({ids: userData.orders}));      
       dispatch(fetchCartItems({ids: userData.cartItems}));
     }
   }, [userData]);

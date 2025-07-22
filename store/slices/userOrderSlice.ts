@@ -18,12 +18,13 @@ export const fetchUserOrders = createAsyncThunk<order[], {ids: string[]}>(
                 ENV.DB_ORDERS_COL_ID,
                 id
             );
+            const cartProducts = orderData.cartProducts.map((item: string) => JSON.parse(item));
 
             return ({
                 id: orderData.$id,
                 address: JSON.parse(orderData.address),
                 status: orderData.status,
-                cartProducts: JSON.parse(orderData.cartProducts),
+                cartProducts: cartProducts,
                 totalPrice: orderData.totalPrice,
                 userName: orderData.userName,
                 userPhone: orderData.userPhone,
@@ -60,9 +61,14 @@ const userOdersSlice = createSlice({
         })
         .addCase(fetchUserOrders.fulfilled, (state, action) => {
             state.loading = false;
+            console.log(action.payload);
+            
             state.userOrders = [...action.payload];
         })
-        .addCase(fetchUserOrders.rejected, (state) => {
+        .addCase(fetchUserOrders.rejected, (state, action) => {
+            console.log('rej');
+            console.log(action.payload);
+            
             state.loading = false;
             state.userOrders = [];
         })

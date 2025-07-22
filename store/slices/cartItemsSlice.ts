@@ -27,6 +27,7 @@ export const fetchCartItems = createAsyncThunk<cartProduct[], {ids: string[]}>(
                 image: cartProductData.image,
                 stock: cartProductData.stock,
                 ordering: cartProductData.ordering,
+                returnable: cartProductData.returnable,
                 options: JSON.parse(cartProductData?.options || '[]'),
                 userID: cartProductData.userID
             } as cartProduct); 

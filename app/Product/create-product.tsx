@@ -3,9 +3,9 @@ import ImageUpload from "@/components/ImageUpload";
 import { category, ProductItemProps } from "@/types/Product/ProductItemProps";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Button, Text, View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { categories } from "@/constants/categories";
+import { categories, returnTypes } from "@/constants/categories";
 import AddProductHero from "@/components/AddProductHero";
 import FormList from "@/components/Form/FormList";
 import { useSelector } from "react-redux";
@@ -32,6 +32,7 @@ const AddProduct = () => {
       images: [],
       category: category,
       subCategory: "",
+      returnable: true,
       options: [],
     },
     mode: "onChange",
@@ -65,6 +66,7 @@ const AddProduct = () => {
             category: data.category,
             subCategory: data.subCategory || '',
             options: JSON.stringify(data.options ?? []),
+            returnable: data.returnable,
             id: id,
         }
         );
@@ -178,6 +180,33 @@ const AddProduct = () => {
             {errors.subCategory && (
             <Text style={styles.errorText}>
                 {errors.subCategory.message}
+            </Text>
+            )}
+          </Picker>
+        )}
+      />
+
+        <Controller
+        control={control}
+        name="returnable"
+        rules={{ required: "Պարտադիր է" }}
+        render={({ field: { value, onChange } }) => (
+          <Picker
+            selectedValue={value}
+            onValueChange={(val) => onChange(val)}
+            style={styles.picker}
+          >
+            <Picker.Item label="Ընտրել վերադարձի տեսակը" value="" />
+            {returnTypes.map((item, index) => (
+              <Picker.Item
+                key={index}
+                value={item.value}
+                label={item.label}
+              />
+            ))}
+            {errors.returnable && (
+            <Text style={styles.errorText}>
+                {errors.returnable.message}
             </Text>
             )}
           </Picker>

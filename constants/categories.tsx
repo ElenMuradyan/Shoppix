@@ -1,5 +1,16 @@
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 
+export const returnTypes = [
+    {
+        label: 'Ենթակա է վերադարձի',
+        value: true
+    },
+    {
+        label: 'Ենթակա չէ վերադարձի',
+        value: false
+    }
+]
+
 export const categories = {
   Laundry: {
     armenianName: "Լվացք",

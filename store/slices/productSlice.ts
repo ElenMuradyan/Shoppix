@@ -24,6 +24,7 @@ export const fetchProductInfo = createAsyncThunk(
                 name: doc.name,
                 price: doc.price,
                 description: doc.description,
+                returnable: doc.returnable,
                 images: doc.images,
                 category: doc.category,
                 subCategory: doc.subCategory,

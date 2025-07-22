@@ -22,8 +22,6 @@ export const handleAddToCart = async ({productInfo, choosenOptions, setErrorMess
             item.productId === productId &&
             JSON.stringify(item.options) === options
         );
-        console.log(existingItem);
-        console.log(cartItems);
         
         if(existingItem){
             const updatedStock  = (Number(existingItem.stock) + Number(orderedProductInfo.stock)).toString();
@@ -49,6 +47,7 @@ export const handleAddToCart = async ({productInfo, choosenOptions, setErrorMess
                 options: options,
                 price: productInfo.price,
                 name: productInfo.name,
+                returnable: productInfo.returnable,
                 userID: userData.ID,
             };
             

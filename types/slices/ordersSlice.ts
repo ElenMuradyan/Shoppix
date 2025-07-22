@@ -11,7 +11,8 @@ export type order = {
     userName: string,
     userPhone: string,
     userEmail: string,
-    userId: string
+    userId: string,
+    returnedItemsDetails?: returnedItemsType | null,
 };
 
 export interface orderCartProduct {
@@ -19,6 +20,7 @@ export interface orderCartProduct {
     cartItemId: string,
     image: string,
     options: optionType[],
+    returnable: boolean;
     stock: string,
     price: string,
     name: string,

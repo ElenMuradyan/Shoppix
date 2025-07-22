@@ -27,6 +27,7 @@ export const fetchProducts = createAsyncThunk<ProductItemProps[]>(
                 description: doc.description,
                 images: doc.images,
                 category: doc.category,
+                returnable: doc.returnable,
                 subCategory: doc.subCategory,
                 options: JSON.parse(doc.options || "[]"),
             }))                

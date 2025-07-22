@@ -12,6 +12,7 @@ export interface ProductItemProps {
   autor: string;
   images: string[];
   category: category;
+  returnable: boolean;
   subCategory: string;
   options?: optionType[];
 }

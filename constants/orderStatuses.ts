@@ -24,14 +24,16 @@ export const orderStatuses: Record<string, Record<string, string>> = {
   },
   doneOrders: {
     color: "#D1FAE5", // brighter green-100
-    textColor: "#065F46", // darker green-700
+    textColor: "#065F46",
     message: "Your order has been successfully delivered.",
     index: '3',
   },
   failedOrders: {
-    color: "#FEE2E2", // brighter red-100
-    textColor: "#B91C1C", // darker red-700
+    color: "#FEE2E2", 
+    textColor: "#B91C1C", 
     message: "The payment or order processing has failed. Please try again.",
     index: '4',
   },
 };
+
+export type OrderKeys = keyof typeof orderStatuses;

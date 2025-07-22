@@ -103,6 +103,7 @@ export default function ProductDetails() {
         <Text style={styles.name}>{productInfo.name}</Text>
         <Text style={styles.price}>{productInfo.price} AMD</Text>
         <Text style={styles.description}>{productInfo.description}</Text>
+        <Text style={styles.stock}>{productInfo.returnable ? 'ՎԵՐԱԴԱՐՁԻ ԵՆԹԱԿԱ Է' : 'ՎԵՐԱԴԱՐՁԻ ԵՆԹԱԿԱ ՉԷ'}</Text>
 
         {productInfo.options?.map((option) => (
           <View key={option.optionName} style={styles.optionContainer}>

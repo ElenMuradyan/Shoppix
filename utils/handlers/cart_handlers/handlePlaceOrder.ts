@@ -5,9 +5,9 @@ import { addUserOrder } from "@/store/slices/userOrderSlice";
 import { addOrder, setCartItemIds } from "@/store/slices/userSlice";
 import { handlePlaceOrderInterface } from "@/types/handlePlaceOrder";
 import { cartProduct } from "@/types/slices/cartItemsSlice";
-import { order } from "@/types/slices/ordersSlice";
-import { orderStatuses } from "@/utils/orderStatuses";
+import { orderStatuses } from "@/constants/orderStatuses";
 import { ID } from "react-native-appwrite";
+import { orderCartProduct } from "@/types/slices/ordersSlice";
 
 export const handlePlaceOrder = async ({values, userData, setLoading, cartItems, dispatch}: handlePlaceOrderInterface) => {
     if(userData){
@@ -34,10 +34,11 @@ export const handlePlaceOrder = async ({values, userData, setLoading, cartItems,
                 options: item.options,
                 stock: item.stock,
                 price: item.price,
+                returnable: item.returnable,
                 name: item.name,
           })
         })
-        const cartProducts: string[] = cartStringProducts.map((item) => JSON.parse(item))
+        const cartProducts: orderCartProduct[] = cartStringProducts.map((item) => JSON.parse(item));
 
         for (const item of orderedProducts) {
             await db.deleteDocument(
@@ -88,7 +89,7 @@ export const handlePlaceOrder = async ({values, userData, setLoading, cartItems,
           address: values,
           cartProducts: cartProducts,
         }));
-        
+
         dispatch(setCartItemIds(notOrderedProductIds));
         dispatch(setCartItems(notOrderedProducts));
 

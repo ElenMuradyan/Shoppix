@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { cartNames } from "@/constants/optionNamesOptions";
 import { handleAddToOrder, handleDeleteCartItem, handleStockChange } from "@/utils/handlers/cart_handlers/handleChanges";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { handleChange } from "@/utils/stockValidator";
 import { cartProduct } from "@/types/slices/cartItemsSlice";
-import { ROUTE_CONSTANTS } from "@/utils/routes";
 
 const CartProductItem: React.FC<cartProduct> = ({
   productId,
@@ -18,6 +17,7 @@ const CartProductItem: React.FC<cartProduct> = ({
   stock,
   options,
   ordering,
+  returnable,
   cartItemId,
   index
 }) => {

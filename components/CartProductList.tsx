@@ -14,7 +14,7 @@ const CartProductList = () => {
         data={reversedCart}
         keyExtractor={(item, index) => item.cartItemId || index.toString()}
         renderItem={({ item }) => {
-          const { productId, stock, userID, image, price, name, options, ordering, cartItemId } = item;
+          const { productId, returnable, stock, userID, image, price, name, options, ordering, cartItemId } = item;
 
           return (
             <CartProductItem
@@ -26,6 +26,7 @@ const CartProductList = () => {
               stock={stock}
               options={options}
               ordering={ordering}
+              returnable={returnable}
               userID={userID}
               index={cartItems.indexOf(item)}
             />
