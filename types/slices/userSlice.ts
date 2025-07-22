@@ -23,3 +23,11 @@ export type userDataType = {
   cartItems: string[];
   orders: string[];
 }
+
+export type address = {
+  region: string;
+  city: string;
+  street: string;
+  postIndex: string;
+  homeIndex: string;
+}

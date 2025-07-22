@@ -13,8 +13,8 @@ const CartProductList = () => {
       <FlatList
         data={reversedCart}
         keyExtractor={(item, index) => item.cartItemId || index.toString()}
-        renderItem={({ item, index }) => {
-          const { productId, stock, image, price, name, options, maxStock, ordering, cartItemId } = item;
+        renderItem={({ item }) => {
+          const { productId, stock, userID, image, price, name, options, ordering, cartItemId } = item;
 
           return (
             <CartProductItem
@@ -25,8 +25,8 @@ const CartProductList = () => {
               price={price}
               stock={stock}
               options={options}
-              maxStock={maxStock}
               ordering={ordering}
+              userID={userID}
               index={cartItems.indexOf(item)}
             />
           );

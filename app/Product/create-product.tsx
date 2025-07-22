@@ -32,7 +32,6 @@ const AddProduct = () => {
       images: [],
       category: category,
       subCategory: "",
-      stock: "",
       options: [],
     },
     mode: "onChange",
@@ -65,7 +64,6 @@ const AddProduct = () => {
             images: data.images,
             category: data.category,
             subCategory: data.subCategory || '',
-            stock: data.stock.toString(),
             options: JSON.stringify(data.options ?? []),
             id: id,
         }
@@ -126,22 +124,6 @@ const AddProduct = () => {
             onChange={field.onChange}
             error={errors.description?.message}
             keyboardType="default"
-            autoCapitalize="none"
-          />
-        )}
-      />
-
-      <Controller
-        control={control}
-        name="stock"
-        rules={{ required: "Պարտադիր է" }}
-        render={({ field }) => (
-          <FormInput
-            label="Քանակ"
-            value={field.value.toString()}
-            onChange={(text) => field.onChange(Number(text))}
-            error={errors.stock?.message}
-            keyboardType="numeric"
             autoCapitalize="none"
           />
         )}

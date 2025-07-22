@@ -13,7 +13,6 @@ export interface ProductItemProps {
   images: string[];
   category: category;
   subCategory: string;
-  stock: string;
   options?: optionType[];
 }
 

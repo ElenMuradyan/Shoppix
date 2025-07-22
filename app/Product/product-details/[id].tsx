@@ -7,15 +7,13 @@ import { fetchProductInfo } from "@/store/slices/productSlice";
 import { names } from "@/constants/optionNamesOptions";
 import { handleChange } from "@/utils/stockValidator";
 import RelatedProducts from "@/components/ProductItems/RelatedProducts";
-import { handleAddToCart } from "@/utils/handlers/Product/handleAddToCart";
-import { fetchCartItems } from "@/store/slices/cartItemsSlice";
+import { handleAddToCart } from "@/utils/handlers/product/handleAddToCart";
 // import BackButton from "../../components/shared/BackButton";
 
 export default function ProductDetails() {
   const { id: productId } = useLocalSearchParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
   const { productInfo } = useSelector((state: RootState) => state.productInfo);
-  const { products } = useSelector((state: RootState) => state.products);
   const { userData } = useSelector((state: RootState) => state.userData.authUserInfo);
   const { cartItems } = useSelector((state: RootState) => state.cartItems);
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
@@ -30,12 +28,6 @@ export default function ProductDetails() {
       dispatch(fetchProductInfo(productId));
     }
   }, [productId]);
-
-  useEffect(() => {
-    if(userData){
-      dispatch(fetchCartItems({ids: userData.cartItems, products}));
-    }
-  }, [userData?.cartItems, products])
 
   useEffect(() => {
     if (productInfo) {
@@ -111,7 +103,6 @@ export default function ProductDetails() {
         <Text style={styles.name}>{productInfo.name}</Text>
         <Text style={styles.price}>{productInfo.price} AMD</Text>
         <Text style={styles.description}>{productInfo.description}</Text>
-        <Text style={styles.stock}>Available Stock: {productInfo.stock}</Text>
 
         {productInfo.options?.map((option) => (
           <View key={option.optionName} style={styles.optionContainer}>
@@ -133,11 +124,11 @@ export default function ProductDetails() {
           </View>
         ))}
 
-        <Text style={styles.optionTitle}>Ընտրեք քանակը {productInfo.stock}-ից</Text>
+        <Text style={styles.optionTitle}>Ընտրեք քանակը</Text>
         <TextInput
           keyboardType="number-pad"
           value={orderedStock.toString()}
-          onChangeText={(text) => handleChange(text, setOrderedStock, setErrorMessage, Number(productInfo.stock))}
+          onChangeText={(text) => handleChange(text, setOrderedStock, setErrorMessage)}
           style={styles.input}
           placeholder="Enter quantity"
         />

@@ -6,7 +6,7 @@ import { Text, useTheme } from "react-native-paper";
 import { useForm, Controller } from "react-hook-form";
 import { userDataType } from "@/types/slices/userSlice";
 import { ScrollView } from "react-native";
-import { handleSignUp } from "@/utils/auth_handlers/signup";
+import { handleSignUp } from "@/utils/handlers/auth_handlers/signup";
 import { FormInput } from "@/components/Form/FormInput";
 import { passwordRules } from "@/constants/auth/validation";
 import Animated, { FadeInDown } from "react-native-reanimated";

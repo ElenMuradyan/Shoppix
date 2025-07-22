@@ -1,6 +1,6 @@
 import { ENV } from "@/constants/env";
 import { db } from "@/lib/appwrite";
-import { setCartItems, setOrdering } from "@/store/slices/cartItemsSlice";
+import { changeStockOfCartItem, setCartItems, setOrdering } from "@/store/slices/cartItemsSlice";
 import { setCartItemIds } from "@/store/slices/userSlice";
 import { handleDeleteCartItemInterface } from "@/types/handleDeleteCartItemInterface";
 import { handleStockChangeInterface } from "@/types/handleStockChangeInterface";
@@ -65,7 +65,7 @@ export const handleAddToOrder = async ({cartItemId, userData, dispatch, index, o
     }
 };
 
-export const handleStockChange = async ({cartItemId, userData, setLoading, inputValue, setSubmitChange}: handleStockChangeInterface) => {
+export const handleStockChange = async ({cartItemId, userData, setLoading, inputValue, setSubmitChange, dispatch}: handleStockChangeInterface) => {
     if(userData){
         try{
             setLoading(true);
@@ -78,6 +78,7 @@ export const handleStockChange = async ({cartItemId, userData, setLoading, input
                     stock: inputValue
                 }
             ); 
+            dispatch(changeStockOfCartItem({cartItemId, newStock: inputValue}))
             setSubmitChange(false);
         }catch(error: any){
             console.log(error.message);

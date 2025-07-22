@@ -13,7 +13,6 @@ export const testProducts: ProductItemProps[] = [
     ],
     category: 'Bathroom',
     subCategory: "Computer Accessories",
-    stock: '120',
     options: [
       { optionName: "Color", optionValue: ["Black", "White"] },
       { optionName: "Layout", optionValue: ["US", "UK"] }
@@ -30,7 +29,6 @@ export const testProducts: ProductItemProps[] = [
     ],
     category: 'Appliances',
     subCategory: "Cycling",
-    stock: '45',
     options: [
       { optionName: "Size", optionValue: ["M", "L", "XL"] },
       { optionName: "Color", optionValue: ["Red", "Blue", "Green"] }
@@ -47,7 +45,6 @@ export const testProducts: ProductItemProps[] = [
     ],
     category: "Plants",
     subCategory: "Laptops",
-    stock: '5',
     // no options, and that's okay since it's optional
   },
   {
@@ -61,6 +58,5 @@ export const testProducts: ProductItemProps[] = [
     ],
     category: "Decor",
     subCategory: "Programming",
-    stock: '999',
   }
 ];

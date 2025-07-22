@@ -1,8 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "@/lib/appwrite";
 import { cartItemsSliceType , cartProduct } from "@/types/slices/cartItemsSlice";
-import ProductItem from "@/components/ProductItems/ProductItem";
-import { ProductItemProps } from "@/types/Product/ProductItemProps";
 import { ENV } from "@/constants/env";
 
 const initialState: cartItemsSliceType = {
@@ -10,11 +8,10 @@ const initialState: cartItemsSliceType = {
     cartItems: [],
 };
 
-export const fetchCartItems = createAsyncThunk<cartProduct[], {ids: string[], products: ProductItemProps[]}>(
+export const fetchCartItems = createAsyncThunk<cartProduct[], {ids: string[]}>(
     "products/fetchCartItems",
-    async({ids, products}, { rejectWithValue }) => {
-        try{console.log('cart');
-        
+    async({ids}, { rejectWithValue }) => {
+        try{
         const cartItems = await Promise.all(ids.map(async (id) => {
             const cartProductData = await db.getDocument(
                 ENV.DB_ID,
@@ -22,20 +19,16 @@ export const fetchCartItems = createAsyncThunk<cartProduct[], {ids: string[], pr
                 id
             );
 
-            const productId = cartProductData.productId;
-
-            const productData = products.find((item) => item.id === productId);
-
             return ({
-                productId,
+                productId: cartProductData.productId,
                 cartItemId: id,
-                name: productData?.name,
-                price: productData?.price,
+                name: cartProductData.name,
+                price: cartProductData.price,
                 image: cartProductData.image,
                 stock: cartProductData.stock,
-                maxStock: productData?.stock,
                 ordering: cartProductData.ordering,
-                options: JSON.parse(cartProductData?.options || '[]')
+                options: JSON.parse(cartProductData?.options || '[]'),
+                userID: cartProductData.userID
             } as cartProduct); 
             }))
 
@@ -59,6 +52,24 @@ const cartItemsSlice = createSlice({
         setCartItems: (state, action) => { 
             state.cartItems = [...action.payload];
         },
+        changeStockOfCartItem: (state, action) => {
+            const { cartItemId, newStock } = action.payload;
+
+            const index = state.cartItems.findIndex((item) => item.cartItemId === cartItemId);
+            if(index !== -1){
+                state.cartItems[index].stock = newStock;
+            }
+        },
+        addCartItem: (state, action) => {
+            state.cartItems.push(action.payload);
+        },
+        deleteCartItem: (state, action) => {
+            const arr = [...state.cartItems];
+            const index = arr.findIndex((item) => item.cartItemId === action.payload);
+
+            arr.splice(index, 1);
+            state.cartItems = arr;
+        }
     },
     extraReducers:(builder) => {
         builder
@@ -77,5 +88,5 @@ const cartItemsSlice = createSlice({
     }
 });
 
-export const { changeLoading, setCartItems, setOrdering } = cartItemsSlice.actions;
+export const { changeLoading, setCartItems, setOrdering, changeStockOfCartItem, addCartItem } = cartItemsSlice.actions;
 export default cartItemsSlice.reducer;

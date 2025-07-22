@@ -2,7 +2,6 @@ import Categories from "@/components/Categories";
 import Hero, { styles } from "@/components/Hero";
 import ProductList from "@/components/ProductItems/ProductList";
 import SearchBar from "@/components/Search";
-import { testProducts } from "@/data/products";
 import { account } from "@/lib/appwrite";
 import { RootState } from "@/store/store";
 import { ROUTE_CONSTANTS } from "@/utils/routes";
@@ -32,7 +31,7 @@ export default function HomeScreen() {
       <SearchBar handleSearch={(val) => console.log(val)}/>
       <Hero/>
       <Categories />
-      {userData?.role === 'admin' && <Link style={styles.button} href={ROUTE_CONSTANTS.ADDPRODUCT}>+ Ավելացնել ապրանք</Link>}
+      {userData?.role === 'admin' && <Link style={styles.button} href={`..${ROUTE_CONSTANTS.NOT_AUTH_PROTECTED.ADDPRODUCT}`}>+ Ավելացնել ապրանք</Link>}
       <ProductList products={products}/>
     </ScrollView>
   )

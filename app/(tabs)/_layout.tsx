@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import { fetchUserProfileInfo } from '@/store/slices/userSlice';
 import { useEffect } from 'react';
-import { useJwtRefresh } from '@/utils/auth_handlers/cachingUser';
-import { initClientJWT } from '@/utils/auth_handlers/refreshJWT';
+import { useJwtRefresh } from '@/utils/handlers/auth_handlers/cachingUser';
+import { initClientJWT } from '@/utils/handlers/auth_handlers/refreshJWT';
 import { AntDesign, Entypo, FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { fetchProducts } from '@/store/slices/productsSlice';
 import { fetchCartItems } from '@/store/slices/cartItemsSlice';
@@ -36,9 +36,9 @@ export default function RootLayout() {
 
   useEffect(() => {
     if(userData){
-      dispatch(fetchCartItems({ids: userData.cartItems, products}));
+      dispatch(fetchCartItems({ids: userData.cartItems}));
     }
-  }, [userData, products]);
+  }, [userData]);
 
   if (!loaded || loading) {
     return null;

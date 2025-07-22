@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { cartNames } from "@/constants/optionNamesOptions";
-import { handleAddToOrder, handleDeleteCartItem, handleStockChange } from "@/utils/cart/handleChanges";
+import { handleAddToOrder, handleDeleteCartItem, handleStockChange } from "@/utils/handlers/cart_handlers/handleChanges";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { handleChange } from "@/utils/stockValidator";
 import { cartProduct } from "@/types/slices/cartItemsSlice";
@@ -16,7 +16,6 @@ const CartProductItem: React.FC<cartProduct> = ({
   name,
   price,
   stock,
-  maxStock,
   options,
   ordering,
   cartItemId,
@@ -42,8 +41,8 @@ const CartProductItem: React.FC<cartProduct> = ({
           <Text>{ordering ? "✓" : " "}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => router.replace(`${ROUTE_CONSTANTS.PRODUCTDETAILS}/${productId}`)}>
-          <Image source={{ uri: image }} style={styles.image} />
+        <TouchableOpacity onPress={() => router.push(`/Product/product-details/${productId}`)}>
+        <Image source={{ uri: image }} style={styles.image} />
         </TouchableOpacity>
 
         <View style={styles.details}>
@@ -80,10 +79,13 @@ const CartProductItem: React.FC<cartProduct> = ({
         <TextInput
           keyboardType="number-pad"
           value={orderedStock.toString()}
-          onChangeText={(text) => {handleChange(text, setOrderedStock, setErrorMessage, Number(maxStock)); setSubmitChange(true); setInputValue(text)}}
+          onChangeText={(text) => {handleChange(text, setOrderedStock, setErrorMessage); setSubmitChange(true); setInputValue(text)}}
           style={styles.input}
           placeholder="Enter quantity"
         />
+        {
+            errorMessage && <Text style={{color: 'red'}}>{errorMessage}</Text>
+        }
       </View>
 
       <TouchableOpacity onPress={() =>

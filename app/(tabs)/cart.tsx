@@ -1,34 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import CartProductList from "@/components/CartProductList";
-import { AppDispatch, RootState } from "@/store/store";
-import { fetchCartItems } from "@/store/slices/cartItemsSlice";
-import { handleOrder } from "@/utils/cart/handleOrder";
+import { RootState } from "@/store/store";
 import CardTotal from "@/components/CardTotal";
-import { useRouter } from "expo-router";
 import { ROUTE_CONSTANTS } from "@/utils/routes";
+import { handleOrder } from "@/utils/handlers/cart_handlers/handleOrder";
+import { navigate } from "expo-router/build/global-state/routing";
 
 const Cart = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { authUserInfo: {userData}} = useSelector((state: RootState) => state.userData);
-  const { products } = useSelector((state: RootState) => state.products);
   const { cartItems } = useSelector((state: RootState) => state.cartItems);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (userData && products) {
-      dispatch(fetchCartItems({ids: userData.cartItems, products}));
-    }
-  }, [userData, products]);
 
     const handleGoToOrder = async () => {
       try{
           setLoading(true);
           handleOrder({ cart: cartItems, setErrorMessage });
-          router.replace(`..${ROUTE_CONSTANTS.PLACEORDER}`);
+          navigate(ROUTE_CONSTANTS.NOT_AUTH_PROTECTED.PLACEORDER);
       }catch(err: any) {
         console.log(err.message);
       }finally{

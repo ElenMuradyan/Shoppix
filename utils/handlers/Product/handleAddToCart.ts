@@ -1,5 +1,6 @@
 import { ENV } from "@/constants/env";
 import { db } from "@/lib/appwrite";
+import { addCartItem, changeStockOfCartItem } from "@/store/slices/cartItemsSlice";
 import { setCartItemIds } from "@/store/slices/userSlice";
 import { handleAddToCartInterface, optionType } from "@/types/Product/ProductItemProps";
 import { ID } from "react-native-appwrite";
@@ -16,37 +17,39 @@ export const handleAddToCart = async ({productInfo, choosenOptions, setErrorMess
 
     if(userData && productInfo){
       try{
+        const options = JSON.stringify(orderedProductInfo.options);
         const existingItem = cartItems.find((item) =>
             item.productId === productId &&
-            JSON.stringify(item.options) === JSON.stringify(orderedProductInfo.options)
+            JSON.stringify(item.options) === options
         );
         console.log(existingItem);
+        console.log(cartItems);
         
-        if(existingItem){            console.log('if');
-            if(Number(existingItem.stock) + Number(orderedProductInfo.stock) > Number(existingItem.maxStock)) {
-                setErrorMessage("Ընտրված քանակը գերազանցում է պահեստում առկա քանակը");
-                return;
-            } 
-            console.log((Number(existingItem.stock) + Number(orderedProductInfo.stock)).toString())
+        if(existingItem){
+            const updatedStock  = (Number(existingItem.stock) + Number(orderedProductInfo.stock)).toString();
             await db.updateDocument(
                 ENV.DB_ID,
                 ENV.DB_CART_ITEMS_COL_ID,
                 existingItem.cartItemId,
                 {
-                    stock: (Number(existingItem.stock) + Number(orderedProductInfo.stock)).toString(),
+                    stock: updatedStock,
                 }
-            );
-        }else{
-            console.log('else');
-            
+            )
+
+            dispatch(changeStockOfCartItem({cartItemId: existingItem.cartItemId, newStock: updatedStock}))
+        }else{            
             const id = ID.unique();
 
             const cartItem = {
                 productId,
-                stock: orderedProductInfo.stock,
-                options: JSON.stringify(orderedProductInfo.options),
-                image: productInfo.images[0],
                 cartItemId: id,
+                image: productInfo.images[0],
+                stock: orderedProductInfo.stock,
+                ordering: false,
+                options: options,
+                price: productInfo.price,
+                name: productInfo.name,
+                userID: userData.ID,
             };
             
             await db.createDocument(
@@ -55,7 +58,7 @@ export const handleAddToCart = async ({productInfo, choosenOptions, setErrorMess
                 id,
                 cartItem
             );
-
+ 
             await db.updateDocument(
                 ENV.DB_ID,
                 ENV.DB_USERS_COL_ID,
@@ -64,11 +67,14 @@ export const handleAddToCart = async ({productInfo, choosenOptions, setErrorMess
                     cartItems: [...userData.cartItems, id],
                 }
             );
-
+            dispatch(addCartItem({
+                ...cartItem,
+                options: JSON.parse(options)
+            }));
             dispatch(setCartItemIds([...userData.cartItems, id]));
         }
     } catch (error: any) {
-        console.error("Add to cart error:", error);
+        console.error("Add to cart error:", { error, userData, productId });
         setErrorMessage("Չհաջողվեց ավելացնել զամբյուղ։");
     }
     }

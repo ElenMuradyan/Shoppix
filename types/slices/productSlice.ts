@@ -1,4 +1,4 @@
-import { optionType, ProductItemProps } from "../Product/ProductItemProps"
+import { ProductItemProps } from "../Product/ProductItemProps"
 
 export type myProductsSliceType = {
     loading: boolean,

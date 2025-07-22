@@ -2,14 +2,14 @@ import { optionType } from "../Product/ProductItemProps";
 
 export interface cartProduct {
     productId: string,
-    stock: string,
-    options: optionType[],
-    price: string,
-    image: string,
-    name: string,
     cartItemId: string,
-    maxStock: string,
+    image: string,
     ordering: boolean,
+    options: optionType[],
+    stock: string,
+    price: string,
+    name: string,
+    userID: string,
     index?: number,
 }
 

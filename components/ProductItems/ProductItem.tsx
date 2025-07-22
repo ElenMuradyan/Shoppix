@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
-const ProductItem = ({ id, images, name, price, description, stock }: ProductItemProps) => {
+const ProductItem = ({ id, images, name, price, description }: ProductItemProps) => {
     const router = useRouter();
 
     const handlePress = () => {
@@ -22,7 +22,6 @@ const ProductItem = ({ id, images, name, price, description, stock }: ProductIte
           <Text style={styles.price}>{price} ֏</Text>
         </View>
 
-        <Text style={styles.stock}>Quantity: {stock}</Text>
         <Text numberOfLines={2} style={styles.description}>{description}</Text>
       </View>
     </TouchableOpacity>

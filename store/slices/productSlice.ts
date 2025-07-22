@@ -25,7 +25,6 @@ export const fetchProductInfo = createAsyncThunk(
                 price: doc.price,
                 description: doc.description,
                 images: doc.images,
-                stock: doc.stock,
                 category: doc.category,
                 subCategory: doc.subCategory,
                 options: JSON.parse(doc.options || "[]"),

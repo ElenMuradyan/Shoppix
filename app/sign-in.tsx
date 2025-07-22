@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { TouchableOpacity, View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
-import { handleSignIn } from "@/utils/auth_handlers/signin";
+import { handleSignIn } from "@/utils/handlers/auth_handlers/signin";
 import { emailRules, passwordRules } from "@/constants/auth/validation";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import SignInWrapper from "@/components/Form/sign-in-wrapper";

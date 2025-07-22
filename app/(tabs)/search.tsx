@@ -1,5 +1,5 @@
 import { account } from "@/lib/appwrite";
-import { logout } from "@/utils/auth_handlers/logout";
+import { logout } from "@/utils/handlers/auth_handlers/logout";
 import { ROUTE_CONSTANTS } from "@/utils/routes";
 import { Link } from "expo-router";
 import { useEffect } from "react";
