@@ -2,16 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { View, Text, StyleSheet } from "react-native";
 import { RootState } from "@/store/store";
+import transferFee from "@/utils/transferFee";
 
 const CardTotal = () => {
   const { cartItems } = useSelector((state: RootState) => state.cartItems);
   const [subtotal, setSubtotal] = useState<number>(0);
-
+  const [fee, setFee] = useState<number>(0);
   useEffect(() => {
     const sum = cartItems
       .filter(item => item.ordering)
       .reduce((acc, item) => acc + Number(item.stock) * Number(item.price), 0);
     setSubtotal(sum);
+    setFee(transferFee(sum))
   }, [cartItems]);
 
   return (
@@ -28,12 +30,12 @@ const CardTotal = () => {
         <View style={styles.separator} />
         <View style={styles.row}>
           <Text style={styles.label}>Առաքման վճար</Text>
-          <Text style={styles.value}>500 Դ</Text>
+          <Text style={styles.value}>{fee}</Text>
         </View>
         <View style={styles.separator} />
         <View style={styles.row}>
           <Text style={[styles.label, styles.totalLabel]}>Ընդհանուր</Text>
-          <Text style={[styles.value, styles.totalValue]}>{subtotal + 500} Դ</Text>
+          <Text style={[styles.value, styles.totalValue]}>{fee + subtotal} Դ</Text>
         </View>
       </View>
     </View>

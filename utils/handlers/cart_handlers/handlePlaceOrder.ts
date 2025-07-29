@@ -8,6 +8,8 @@ import { cartProduct } from "@/types/slices/cartItemsSlice";
 import { orderStatuses } from "@/constants/orderStatuses";
 import { ID } from "react-native-appwrite";
 import { orderCartProduct } from "@/types/slices/ordersSlice";
+import transferFee from "@/utils/transferFee";
+import { navigate } from "expo-router/build/global-state/routing";
 
 export const handlePlaceOrder = async ({values, userData, setLoading, cartItems, dispatch}: handlePlaceOrderInterface) => {
     if(userData){
@@ -52,13 +54,14 @@ export const handlePlaceOrder = async ({values, userData, setLoading, cartItems,
           (acc, item) => acc + Number(item.price) * Number(item.stock),
           0
         );
+        const fee = transferFee(totalPrice);
         const orderID = ID.unique();
 
         const orderDetails = {
           id: orderID,
           address: JSON.stringify(values),
           cartProducts: cartStringProducts,
-          totalPrice: totalPrice.toString(),
+          totalPrice: (totalPrice + fee).toString(),
           status: Object.keys(orderStatuses)[0],
           userPhone: userData.phone,
           userName: `${userData.firstName} ${userData.lastName}`,
@@ -88,11 +91,14 @@ export const handlePlaceOrder = async ({values, userData, setLoading, cartItems,
           ...orderDetails,
           address: values,
           cartProducts: cartProducts,
+          date: Date.now().toLocaleString(),
+          returnedPrice: 0,
+          returnedProducts: [],
         }));
 
         dispatch(setCartItemIds(notOrderedProductIds));
         dispatch(setCartItems(notOrderedProducts));
-
+        navigate(`/orders`)
         console.log("Orders have been successfully placed!");
       } catch (error: any) {
         console.error("Order processing failed:", error.message);

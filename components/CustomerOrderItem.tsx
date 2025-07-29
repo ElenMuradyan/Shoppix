@@ -19,6 +19,7 @@ const OrderComponent = ({ order }: { order: order }) => {
   const orderStatusesArray = Object.keys(orderStatuses);
   const index = orderStatusesArray.indexOf(status);
   const returnAbleProducts = cartProducts.filter(item => item.returnable);
+console.log(date);
 
   const handleModalOk = () => {
 
