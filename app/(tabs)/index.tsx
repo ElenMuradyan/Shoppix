@@ -24,7 +24,6 @@ export default function HomeScreen() {
       }
       getCurrent();
     }, []);
-        console.log(userData);
         
   return (
     <ScrollView>

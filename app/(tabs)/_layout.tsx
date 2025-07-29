@@ -34,6 +34,7 @@ export default function RootLayout() {
     }
     initAuth();
   }, [dispatch]);
+console.log(userData);
 
   useEffect(() => {
     if(userData){

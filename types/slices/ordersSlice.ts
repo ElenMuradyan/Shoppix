@@ -13,6 +13,8 @@ export type order = {
     date: string,
     userEmail: string,
     userId: string,
+    returnedPrice: string,
+    returnedProducts: orderCartProduct[],
     returnedItemsDetails?: returnedItemsType | null,
 };
 

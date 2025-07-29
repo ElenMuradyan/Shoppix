@@ -9,9 +9,9 @@ const CardTotal = () => {
 
   useEffect(() => {
     const sum = cartItems
-        .filter(item => item.ordering)
-        .reduce((acc, item) => acc + Number(item.stock) * Number(item.price), 0);
-      setSubtotal(sum);
+      .filter(item => item.ordering)
+      .reduce((acc, item) => acc + Number(item.stock) * Number(item.price), 0);
+    setSubtotal(sum);
   }, [cartItems]);
 
   return (
@@ -22,18 +22,18 @@ const CardTotal = () => {
 
       <View style={styles.detailsContainer}>
         <View style={styles.row}>
-          <Text style={styles.label}>Product Price</Text>
-          <Text style={styles.value}>{subtotal} AMD</Text>
+          <Text style={styles.label}>Ապրանքի գին</Text>
+          <Text style={styles.value}>{subtotal} Դ</Text>
         </View>
         <View style={styles.separator} />
         <View style={styles.row}>
-          <Text style={styles.label}>Delivery Fee</Text>
-          <Text style={styles.value}>500 AMD</Text>
+          <Text style={styles.label}>Առաքման վճար</Text>
+          <Text style={styles.value}>500 Դ</Text>
         </View>
         <View style={styles.separator} />
         <View style={styles.row}>
-          <Text style={[styles.label, styles.totalLabel]}>Total</Text>
-          <Text style={[styles.value, styles.totalValue]}>{subtotal + 500} AMD</Text>
+          <Text style={[styles.label, styles.totalLabel]}>Ընդհանուր</Text>
+          <Text style={[styles.value, styles.totalValue]}>{subtotal + 500} Դ</Text>
         </View>
       </View>
     </View>

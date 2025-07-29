@@ -54,73 +54,70 @@ const CartProductItem: React.FC<Props> = ({
     >
         <MaterialIcons name="delete" size={24} color="red" />
     </TouchableOpacity>
-);
+  );
 
   return (
     <Swipeable 
-        renderRightActions={renderRightActions}
-        ref={swipeableRef}
-        onSwipeableWillOpen={() => {
-            onSwipeOpen(swipeableRef.current!);
-        }}
-
+      renderRightActions={renderRightActions}
+      ref={swipeableRef}
+      onSwipeableWillOpen={() => {
+        onSwipeOpen(swipeableRef.current!);
+      }}
     >
-    <View style={styles.container}>
-      <View style={styles.row}>
-        <TouchableOpacity
-          style={styles.checkbox}
-          onPress={() => handleAddToOrder({ cartItemId, dispatch, userData, index, ordering })}
-        >
+      <View style={styles.container}>
+        <View style={styles.row}>
+          <TouchableOpacity
+            style={styles.checkbox}
+            onPress={() => handleAddToOrder({ cartItemId, dispatch, userData, index, ordering })}
+          >
             <Text>{ordering ? "✓" : " "}</Text>
-        </TouchableOpacity>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => router.push(`/Product/product-details/${productId}`)}>
-        <Image source={{ uri: image }} style={styles.image} />
-        </TouchableOpacity>
+          <TouchableOpacity onPress={() => router.push(`/Product/product-details/${productId}`)}>
+            <Image source={{ uri: image }} style={styles.image} />
+          </TouchableOpacity>
 
-        <View style={styles.details}>
-          <Text style={styles.name}>{name}</Text>
-          <View style={styles.priceOptions}>
-            <Text>{price} AMD</Text>
-            {options &&
-              Object.entries(options).map(([key, value], i) => (
-                <Text key={i} style={styles.option}>
-                {`${String(cartNames[key] ?? key)}: ${String(value)}`}
-                </Text>
-              ))}
+          <View style={styles.details}>
+            <Text style={styles.name}>{name}</Text>
+            <View style={styles.priceOptions}>
+              <Text>{price} Դ</Text>
+              {options &&
+                Object.entries(options).map(([key, value], i) => (
+                  <Text key={i} style={styles.option}>
+                    {`${String(cartNames[key] ?? key)}: ${String(value)}`}
+                  </Text>
+                ))}
+            </View>
           </View>
         </View>
-      </View>
 
-      <View style={styles.stockInputContainer}>
-        {submitChange && (
-          <TouchableOpacity onPress={() => handleStockChange({
-            cartItemId,
-            userData,
-            setLoading,
-            inputValue,
-            setSubmitChange,
-            dispatch
-          })}>
-            {loading ? (
-              <ActivityIndicator />
-            ) : (
+        <View style={styles.stockInputContainer}>
+          {submitChange && (
+            <TouchableOpacity onPress={() => handleStockChange({
+              cartItemId,
+              userData,
+              setLoading,
+              inputValue,
+              setSubmitChange,
+              dispatch
+            })}>
+              {loading ? (
+                <ActivityIndicator />
+              ) : (
                 <AntDesign name="checkcircleo" size={24} color="black" />
-            )}
-          </TouchableOpacity>
-        )}
-        <TextInput
-          keyboardType="number-pad"
-          value={orderedStock.toString()}
-          onChangeText={(text) => {handleChange(text, setOrderedStock, setErrorMessage); setSubmitChange(true); setInputValue(text)}}
-          style={styles.input}
-          placeholder="Enter quantity"
-        />
-        {
-            !!errorMessage && <Text style={{color: 'red'}}>{errorMessage}</Text>
-        }
+              )}
+            </TouchableOpacity>
+          )}
+          <TextInput
+            keyboardType="number-pad"
+            value={orderedStock.toString()}
+            onChangeText={(text) => {handleChange(text, setOrderedStock, setErrorMessage); setSubmitChange(true); setInputValue(text)}}
+            style={styles.input}
+            placeholder="Մուտքագրեք քանակը"
+          />
+          {!!errorMessage && <Text style={{color: 'red'}}>{errorMessage}</Text>}
+        </View>
       </View>
-    </View>
     </Swipeable>
   );
 };

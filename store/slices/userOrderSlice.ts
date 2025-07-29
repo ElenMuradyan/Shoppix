@@ -19,6 +19,7 @@ export const fetchUserOrders = createAsyncThunk<order[], {ids: string[]}>(
                 id
             );
             const cartProducts = orderData.cartProducts.map((item: string) => JSON.parse(item));
+            const returnedProducts = orderData.returnedProducts?.map((item: string) => JSON.parse(item));
 
             return ({
                 date: orderData.$createdAt,
@@ -30,7 +31,9 @@ export const fetchUserOrders = createAsyncThunk<order[], {ids: string[]}>(
                 userName: orderData.userName,
                 userPhone: orderData.userPhone,
                 userEmail: orderData.userEmail,
-                userId: orderData.userId
+                userId: orderData.userId,
+                returnedProducts: returnedProducts,
+                returnedPrice: orderData.returnedPrice
             } as order); 
             }))
             return orders;
@@ -52,6 +55,20 @@ const userOdersSlice = createSlice({
         },
         addUserOrder: (state, action) => {
             state.userOrders.push(action.payload);
+        },
+        handleReturnItems: (state, action) => {
+            const {orderId, returnedProducts, returnedPrice, cartProducts, totalPrice} = action.payload;
+
+            const itemId = state.userOrders.findIndex((item) => item.id === orderId);
+            const item = state.userOrders[itemId];
+
+            state.userOrders[itemId] = {
+                ...item,
+                returnedProducts,
+                returnedPrice: returnedPrice.toString(), 
+                cartProducts,
+                totalPrice: totalPrice.toString()
+            }
         }
     },
     extraReducers:(builder) => {
@@ -61,20 +78,15 @@ const userOdersSlice = createSlice({
             state.userOrders = [];
         })
         .addCase(fetchUserOrders.fulfilled, (state, action) => {
-            state.loading = false;
-            console.log(action.payload);
-            
+            state.loading = false;            
             state.userOrders = [...action.payload];
         })
-        .addCase(fetchUserOrders.rejected, (state, action) => {
-            console.log('rej');
-            console.log(action.payload);
-            
+        .addCase(fetchUserOrders.rejected, (state, action) => {            
             state.loading = false;
             state.userOrders = [];
         })
     }
 });
 
-export const { changeLoading, setUserOrders, addUserOrder } = userOdersSlice.actions;
+export const { changeLoading, setUserOrders, addUserOrder, handleReturnItems } = userOdersSlice.actions;
 export default userOdersSlice.reducer;

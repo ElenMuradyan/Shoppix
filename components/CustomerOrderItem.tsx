@@ -5,46 +5,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { cartNames } from "@/constants/optionNamesOptions";
 import { orderStatuses, OrderKeys } from "@/constants/orderStatuses";
 import { ROUTE_CONSTANTS } from "@/utils/routes";
-// import { handleStatusChange } from "../../../state-management/redux/slices/shopInfoSlice";
-// import { handleChangeStatus } from "../../../utilis/helpers/sellerOrderListFunctions";
-// import { fetchUserData } from "../../../state-management/redux/slices/userDataSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import { order } from "@/types/slices/ordersSlice";
 import { navigate } from "expo-router/build/global-state/routing";
 import OrderProductItem from "./OrderProduct";
 
 const OrderComponent = ({ order }: { order: order }) => {
-  const { userOrders } = useSelector((state: RootState) => state.userOrders);
   const dispatch = useDispatch<AppDispatch>();
-  const { id, date, address, status, cartProducts, totalPrice, returnedItemsDetails } = order;
-
+  const { id, date, address, status, cartProducts, totalPrice, returnedProducts, returnedPrice } = order;
   const orderInfo = orderStatuses[status as string];
   const [modalOpen, setModalOpen] = useState(false);
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const orderStatusesArray = Object.keys(orderStatuses);
   const index = orderStatusesArray.indexOf(status);
   const returnAbleProducts = cartProducts.filter(item => item.returnable);
-console.log(cartProducts);
 
   const handleModalOk = () => {
-    // const prev: OrderKeys = orderStatusesArray[index] as OrderKeys;
-    // const next: OrderKeys = orderStatusesArray[index + 1] as OrderKeys;
 
-    // const newOrdersObject = {
-    //   ...orders,
-    //   [prev]: orders[prev].filter((item) => item !== order),
-    //   [next]: [...orders[next], order],
-    // };
-
-    // dispatch(handleStatusChange(newOrdersObject));
-    // dispatch(fetchUserData());
-    // handleChangeStatus({ order, setModalOpen, prev, next });
   };
+  const handleCancelModalOk = () => {
 
-  const handleReturn = () => {
-    // const returnDetails = { order, orderStatusesArray, index, returnAbleProducts };
-    // navigation.navigate(ROUTE_NAMES.RETURN as never);
-    // localStorage.setItem('returnDetails', JSON.stringify(returnDetails));
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -53,10 +34,24 @@ console.log(cartProducts);
           <Text style={styles.modalText}>{orderInfo?.buyerModalMessage}</Text>
           <View style={styles.modalButtons}>
             <TouchableOpacity style={styles.confirmBtn} onPress={handleModalOk}>
-              <Text style={styles.buttonText}>CONFIRM</Text>
+              <Text style={styles.buttonText}>ՀԱՍՏԱՏԵԼ</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.cancelBtn} onPress={() => setModalOpen(false)}>
-              <Text style={styles.cancelText}>CANCEL</Text>
+              <Text style={styles.cancelText}>ՉԵՂԱՐԿԵԼ</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+        <Modal isVisible={cancelModalOpen}>
+        <View style={styles.modalContent}>
+          <Text style={styles.modalText}>{orderInfo?.cancelModalMessage}</Text>
+          <View style={styles.modalButtons}>
+            <TouchableOpacity style={styles.confirmBtn} onPress={handleCancelModalOk}>
+              <Text style={styles.buttonText}>ՀԱՍՏԱՏԵԼ ՉԵՂԱՐԿՈՒՄԸ</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.cancelBtn} onPress={() => setCancelModalOpen(false)}>
+              <Text style={styles.cancelText}>ՉԵՂԱՐԿԵԼ</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -77,45 +72,59 @@ console.log(cartProducts);
       </Text>
 
       <ScrollView 
-      horizontal 
-      style={styles.productsContainer}
-      contentContainerStyle={{ flexDirection: 'row', gap: 12, width: '100%' }}
+        horizontal 
+        style={styles.productsContainer}
+        contentContainerStyle={{ flexDirection: 'row', gap: 12, width: '100%' }}
       >
-        {
-            cartProducts.map((item) => <OrderProductItem product={item}/>)
-        }
+        {cartProducts.map((item, index) => <OrderProductItem key={index} product={item} />)}
       </ScrollView>
 
-      {status === 'sentOrders' && (
-        <View style={styles.buttonRow}>
-          <TouchableOpacity style={styles.confirmBtn} onPress={() => setModalOpen(true)}>
-            <Text style={styles.buttonText}>Have you received the order?</Text>
-          </TouchableOpacity>
-          {returnAbleProducts.length > 0 && (
-            <TouchableOpacity style={styles.confirmBtn} onPress={handleReturn}>
-              <Text style={styles.buttonText}>Have you returned the products?</Text>
-            </TouchableOpacity>
-          )}
+      {
+        returnedProducts.length > 0 && 
+        <>
+        <View style={styles.header}>
+        <Text style={styles.productName}>Վերադարձված ապրանքներ</Text>
+        <Text style={styles.price}>{returnedPrice} Դ</Text>
         </View>
-      )}
 
-      {status === 'doneOrders' && returnedItemsDetails && (
-        <View>
-          <Text style={styles.sectionTitle}>Returned Products</Text>
-          <Text style={styles.sectionTitle}>Return Amount: {returnedItemsDetails.returnPrice}</Text>
-          {!returnedItemsDetails.confirmedReturn && (
-            <Text style={styles.warningText}>The amount for returned products will be received once the return is confirmed by the seller.</Text>
-          )}
-          {returnedItemsDetails.products.map((product, index) => (
+        <ScrollView 
+            horizontal 
+            style={styles.productsContainer}
+            contentContainerStyle={{ flexDirection: 'row', gap: 12, width: '100%' }}
+        >
+            {returnedProducts.map((product, index) => (
             <View key={index} style={styles.returnedProduct}>
               <Image source={{ uri: product.image }} style={styles.returnedImage} />
               <View style={styles.productInfo}>
                 <Text style={styles.productName}>{product.name}</Text>
-                <Text>{product.price} AMD</Text>
-                <Text>Quantity: {product.stock}</Text>
+                <Text>{product.price} Դ</Text>
+                <Text>Քանակ՝ {product.stock}</Text>
               </View>
-            </View>
-          ))}
+            </View>)
+            )}
+        </ScrollView>
+        </>
+      }
+      {status === 'newOrders' && (
+        <View style={styles.buttonRow}>
+          <TouchableOpacity style={styles.cancelButton} onPress={() => setCancelModalOpen(true)}>
+            <Text style={styles.buttonText}>ՉԵՂԱՐԿԵԼ ՊԱՏՎԵՐԸ</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {status === 'sentOrders' && (
+        <View style={styles.buttonRow}>
+          <TouchableOpacity style={styles.confirmBtn} onPress={() => setModalOpen(true)}>
+            <Text style={styles.buttonText}>Ստացե՞լ եք պատվերը</Text>
+          </TouchableOpacity>
+
+          {
+            returnAbleProducts.length > 0 &&
+            <TouchableOpacity onPress={() => navigate(`../orderReturn/${id}`)} style={styles.confirmBtn}>
+                <Text style={styles.buttonText}>Վերադարձի էջ</Text>
+            </TouchableOpacity>
+          }
         </View>
       )}
     </View>
@@ -147,6 +156,7 @@ const styles = StyleSheet.create({
   productPrice: { fontWeight: "600" },
   optionTag: { backgroundColor: "#e5e7eb", padding: 4, borderRadius: 4, marginTop: 4 },
   buttonRow: { flexDirection: "row", justifyContent: "space-between", gap: 10, marginTop: 10 },
+  cancelButton:{ backgroundColor: "red", padding: 10, borderRadius: 8 },
   sectionTitle: { fontWeight: "bold", marginBottom: 4 },
   warningText: { color: "#b91c1c", fontWeight: "bold", marginBottom: 8 },
   returnedProduct: { flexDirection: "row", gap: 12, padding: 12, backgroundColor: "#f3f4f6", borderRadius: 8, marginBottom: 8 },
@@ -154,24 +164,3 @@ const styles = StyleSheet.create({
 });
 
 export default OrderComponent;
-
-
-/*
-        {cartProducts.map((product, index) => (
-          <TouchableOpacity key={index} onPress={() => navigate(`/Product/product-details/${product.productId}`)}>
-            <View style={styles.productBox}>
-              <Image source={{ uri: product.image }} style={styles.productImage} />
-              <View style={styles.productInfo}>
-                <Text style={styles.productName}>{product.name}</Text>
-                <View style={styles.productDetails}>
-                  <Text style={styles.productPrice}>{product.price} AMD</Text>
-                  <Text>Quantity: {product.stock}</Text>
-                  {product.options && Object.entries(product.options).map(([key, value], idx) => (
-                    <Text key={idx} style={styles.optionTag}>{`${cartNames[key]}: ${value}`}</Text>
-                  ))}
-                </View>
-              </View>
-            </View>
-          </TouchableOpacity>
-        ))}
-*/
