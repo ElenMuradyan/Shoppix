@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { TextInput, View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { navigate } from 'expo-router/build/global-state/routing';
 
 export default function SearchBar({ handleSearch }: { handleSearch: (val: string) => void }) {
   const [inputValue, setInputValue] = useState('');
@@ -15,17 +16,29 @@ export default function SearchBar({ handleSearch }: { handleSearch: (val: string
     }
   }, []);
 
+  const handleNav = () => {console.log(window.location.pathname);
+  
+    if(window.location.pathname === '/'){
+        navigate('/search');
+    }
+  }
+
   return (
     <View style={styles.wrapper}>
-      <TextInput
-        ref={inputRef}
-        value={inputValue}
-        onChangeText={setInputValue}
-        style={styles.searchContainer}
-        placeholder="Որոնում"
-        placeholderTextColor="#666"
-        underlineColorAndroid="transparent"
-      />
+        <TouchableOpacity
+        onPress={handleNav}
+        style={styles.inputContainer}
+        >
+        <TextInput
+            ref={inputRef}
+            value={inputValue}
+            onChangeText={setInputValue}
+            style={styles.searchContainer}
+            placeholder="Որոնում"
+            placeholderTextColor="#666"
+            underlineColorAndroid="transparent"
+        />
+        </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={() => handleSearch?.(inputValue)}>
         <AntDesign name="search1" size={20} color="#333" />
       </TouchableOpacity>
@@ -41,8 +54,17 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 8,
     paddingHorizontal: 8,
+    paddingTop: 30,
     paddingVertical: 4,
     width: '100%',
+  },
+  inputContainer: {
+    flex: 1, 
+    height: 40,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 8,
+    borderWidth: 1,
+    color: '#000',
   },
   searchContainer: {
     flex: 1, 

@@ -1,51 +1,28 @@
-import { categories } from '@/constants/categories';
 import React from 'react'
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { View } from 'react-native';
+import CategoryComponent from './CategoryComponent';
+import { categories } from '@/constants/categories';
 
 const Categories = () => {
   return (
-        <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContainer}
-        >
-        {Object.entries(categories).map(([key, item], index) => (
-            <TouchableOpacity key={index} style={styles.itemContainer}>
-            <View style={styles.iconCircle}>
-                {item.icon}
-            </View>
-            <Text style={styles.label}>{item.armenianName}</Text>
-            </TouchableOpacity>
-        ))}
-        </ScrollView>
+    <View style={styles.categories}>
+        {
+            Object.entries(categories).map(([key, item], index) => (<CategoryComponent name={key} category={item} key={index}/>))
+        }
+    </View>
   )
 }
 
 export default Categories;
 
 const styles = StyleSheet.create({
-  scrollContainer: {
-    paddingHorizontal: 10,
-    paddingTop: 20,
-    paddingBottom: 10,
-  },
-  itemContainer: {
-    alignItems: 'center',
-    marginRight: 15,
-  },
-  iconCircle: {
-    width: 50,
-    height: 50,
-    color: 'white',
-    borderRadius: 30,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 6,
-  },
-  label: {
-    fontSize: 12,
-    color: '#333',
-    textAlign: 'center',
-  },
-});
+  categories: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+        flexWrap: 'wrap',
+        width: '100%'
+      },
+})

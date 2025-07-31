@@ -1,45 +1,36 @@
-import { account } from "@/lib/appwrite";
-import { logout } from "@/utils/handlers/auth_handlers/logout";
-import { ROUTE_CONSTANTS } from "@/utils/routes";
-import { Link } from "expo-router";
-import { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Button } from "react-native-paper";
+import Categories from "@/components/Categories";
+import SearchBar from "@/components/Search";
+import Subcategories from "@/components/Subcategories";
+import { useRouter } from "expo-router";
+import { useSearchParams } from "expo-router/build/hooks";
+import { useEffect, useState } from "react";
+import { ScrollView } from "react-native";
 
-export default function HomeScreen() {
+export default function SearchScreen() {
+    const router = useRouter();
+    const params = useSearchParams();
+    const [category, setCategory] = useState<null | string>(null);
+
     useEffect(() => {
-      async function getCurrent() {
-        try {
-          const session = await account.getSession('current');
-          console.log('Current session:', session);
-        } catch (error: any) {
-          console.warn('No current session:', error.message);
+        if (category === null && params.get("category") !== null && params.get("subcategory") !== null) {
+        router.replace({
+            pathname: "/search",
+            params: {}, 
+        });
         }
-      }
-      getCurrent();
-    }, []);
-        
-  return (
-    <View
-      style={styles.view}
-    >
-      <Text className="text-yellow-700 dark:text-yellow-400">Home Page</Text>
-      <Link href={ROUTE_CONSTANTS.AUTH_PROTECTED.LOGIN}>
-            <Text className="text-blue-800 dark:text-amber-500">Go to Login</Text>
-      </Link>
-      <Button onPress={logout}>Logout</Button>
-    </View>
-  )
-}
+    }, [category, params, router]);
+    
+    useEffect(() => {
+        const paramCategory = params.get("category");
+        setCategory(paramCategory);
+    }, [params]);
 
-const styles = StyleSheet.create({
-  view: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      },
-  text: {
-    color: "white",
-    fontSize: 30,
-  }
-})
+    return (
+        <ScrollView>
+        <SearchBar handleSearch={(val) => console.log(val)}/>
+            {
+                category ? <Subcategories /> : <Categories />
+            }
+        </ScrollView>
+    )
+}

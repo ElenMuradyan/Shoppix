@@ -8,6 +8,13 @@ export async function handleSignIn(
   password: string,
 ): Promise<void> {
   try {   
+    try {
+      const currentSession = await account.getSession('current');
+      if (currentSession) {
+        await account.deleteSession("current");
+      }
+    } catch {
+    }
     await account.createEmailPasswordSession(email, password);
 
     const jwt = await account.createJWT();

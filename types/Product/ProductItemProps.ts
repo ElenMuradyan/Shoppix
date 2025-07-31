@@ -17,6 +17,20 @@ export interface ProductItemProps {
   options?: optionType[];
 }
 
+export type product = {
+  id: string;
+  name: string;
+  price: string;
+  description: string;
+  autor: string;
+  images: string[];
+  category: category;
+  returnable: boolean;
+  subCategory: string;
+  options?: optionType[];
+}
+
+
 export type optionType = {
     optionName: string,
     optionValue: string[],

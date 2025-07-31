@@ -1,4 +1,4 @@
-import Categories from "@/components/Categories";
+import Categories from "@/components/CategoriesIcons";
 import Hero, { styles } from "@/components/Hero";
 import ProductList from "@/components/ProductItems/ProductList";
 import SearchBar from "@/components/Search";
