@@ -146,7 +146,7 @@ const AddProduct = () => {
             {Object.entries(categories).map(([key, item], index) => (
               <Picker.Item
                 key={index}
-                value={key}
+                value={item.armenianName}
                 label={item.armenianName}
               />
             ))}
@@ -173,7 +173,7 @@ const AddProduct = () => {
             {categories[category]?.subcategories.map((item, index) => (
               <Picker.Item
                 key={index}
-                value={item.name}
+                value={item.armenianName}
                 label={item.armenianName}
               />
             ))}

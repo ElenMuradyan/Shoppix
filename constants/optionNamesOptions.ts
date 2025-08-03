@@ -1,73 +1,73 @@
 export const optionNamesOptions = [
-    { label: "Size", value: "size" },
-    { label: "Color", value: "color" },
-    { label: "Material", value: "material" },
-    { label: "Power", value: "power" },
-    { label: "Weight", value: "weight" },
+    { label: "Չափս", value: "չափս" },
+    { label: "Գույն", value: "գույն" },
+    { label: "Նյութ", value: "նյութ" },
+    { label: "Ուժ", value: "ուժ" },
+    { label: "Քաշ", value: "քաշ" },
 ];
 
 export const names: Record<string, string> = {
-    size: 'size',
-    color: 'color',
-    material: 'material',
-    power: 'power',
-    weight: 'weight',
+    չափս: 'չափս',
+    գույն: 'գույն',
+    նյութ: 'նյութ',
+    ուժ: 'ուժ',
+    քաշ: 'քաշ',
 }
 
 export const cartNames: Record<string, string> = {
-    size: 'Size',
-    color: 'Color',
-    material: 'Material',
-    power: 'Power',
-    weight: 'Weight',
+    չափս: 'Չափս',
+    գույն: 'Գույն',
+    նյութ: 'Նյութ',
+    ուժ: 'Ուժ',
+    քաշ: 'Քաշ',
 }
 
-type val = {label: string, value: string}
+type val = { label: string, value: string }
 export const suboptions: Record<string, val[]> = {
-    size: [
-        { label: "X-Small", value: "X-Small" },
-        { label: "Small", value: "Small" },
-        { label: "Medium", value: "Medium" },
-        { label: "Large", value: "Large" },
-        { label: "X-Large", value: "X-Large" },
-        { label: "XX-Large", value: "XX-Large" },
-        { label: "XXX-Large", value: "XXX-Large" },
-        { label: "XXXX-Large", value: "XXXX-Large" },
-        { label: "One Size", value: "One Size" }
+    չափս: [
+        { label: "Շատ Փոքր", value: "շատ փոքր" },
+        { label: "Փոքր", value: "փոքր" },
+        { label: "Միջին", value: "միջին" },
+        { label: "Մեծ", value: "մեծ" },
+        { label: "Շատ Մեծ", value: "շատ մեծ" },
+        { label: "XX-Մեծ", value: "xx մեծ" },
+        { label: "XXX-Մեծ", value: "xxx մեծ" },
+        { label: "XXXX-Մեծ", value: "xxxx մեծ" },
+        { label: "Մեկ Չափս", value: "մեկ չափս" }
     ],
-    color: [
-        { label: "Red", value: "Red" },
-        { label: "Blue", value: "Blue" },
-        { label: "Green", value: "Green" },
-        { label: "Black", value: "Black" },
-        { label: "White", value: "White" },
-        { label: "Yellow", value: "Yellow" },
-        { label: "Pink", value: "Pink" },
-        { label: "Purple", value: "Purple" },
-        { label: "Brown", value: "Brown" },
-        { label: "Gray", value: "Gray" }
+    գույն: [
+        { label: "Կարմիր", value: "կարմիր" },
+        { label: "Կապույտ", value: "կապույտ" },
+        { label: "Կանաչ", value: "կանաչ" },
+        { label: "Սեւ", value: "սեւ" },
+        { label: "Սպիտակ", value: "սպիտակ" },
+        { label: "Դեղին", value: "դեղին" },
+        { label: "Վարդագույն", value: "վարդագույն" },
+        { label: "Մանուշակագույն", value: "մանուշակագույն" },
+        { label: "Դարչնագույն", value: "դարչնագույն" },
+        { label: "Մոխրագույն", value: "մոխրագույն" }
     ],
-    material: [
-        { label: "Cotton", value: "Cotton" },
-        { label: "Leather", value: "Leather" },
-        { label: "Polyester", value: "Polyester" },
-        { label: "Wood", value: "Wood" },
-        { label: "Metal", value: "Metal" },
-        { label: "Plastic", value: "Plastic" },
-        { label: "Glass", value: "Glass" },
-        { label: "Silk", value: "Silk" },
-        { label: "Wool", value: "Wool" }
+    նյութ: [
+        { label: "Բամբակ", value: "բամբակ" },
+        { label: "Կաշի", value: "կաշի" },
+        { label: "Պոլիեսթեր", value: "պոլիեսթեր" },
+        { label: "Փայտ", value: "փայտ" },
+        { label: "Մետաղ", value: "մետաղ" },
+        { label: "Պլաստիկ", value: "պլաստիկ" },
+        { label: "Ապակի", value: "ապակի" },
+        { label: "Մետաքս", value: "մետաքս" },
+        { label: "Ողջ", value: "ողջ" }
     ],
-    power: [
-        { label: "Low", value: "Low" },
-        { label: "Medium", value: "Medium" },
-        { label: "High", value: "High" },
-        { label: "Ultra High", value: "Ultra High" }
+    ուժ: [
+        { label: "Թույլ", value: "թույլ" },
+        { label: "Միջին", value: "միջին" },
+        { label: "Ուժեղ", value: "ուժեղ" },
+        { label: "Շատ Ուժեղ", value: "շատ ուժեղ" }
     ],
-    weight: [
-        { label: "Light", value: "Light" },
-        { label: "Medium", value: "Medium" },
-        { label: "Heavy", value: "Heavy" },
-        { label: "Very Heavy", value: "Very Heavy" }
+    քաշ: [
+        { label: "Թեթեւ", value: "թեթեւ" },
+        { label: "Միջին", value: "միջին" },
+        { label: "Ծանր", value: "ծանր" },
+        { label: "Շատ Ծանր", value: "շատ ծանր" }
     ]
 }

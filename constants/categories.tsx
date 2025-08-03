@@ -109,3 +109,44 @@ export const categories: Record<string, category> = {
     ],
   },
 };
+
+export const categoryTranslations: Record<string, string> = {
+  Laundry: "Լվացք",
+  Baskets: "Զամբյուղներ",
+  Detergents: "Լվացքի միջոցներ",
+  Dryers: "Չորանոցներ",
+  Organizers: "Կազմակերպիչներ",
+
+  Kitchen: "Խոհանոց",
+  Cookware: "Թավաներ և կաթսաներ",
+  Cutlery: "Դանակ-պատառաքաղ",
+  Storage: "Պահեստավորում",
+  Textiles: "Սրբիչներ և գոգնոցներ",
+
+  Cleaning: "Մաքրություն",
+  Sprays: "Մաքրող միջոցներ",
+  Brushes: "Խոզանակներ",
+  Mops: "Մոփեր",
+  Gloves: "Ձեռնոցներ",
+
+  Plants: "Բույսեր",
+  Pots: "Կաթսաներ բույսերի համար",
+  Seeds: "Սերմեր",
+  Tools: "Գործիքներ",
+  Decorations: "Դեկորացիաներ",
+
+  Decor: "Դեկոր",
+  WallArt: "Պատային արվեստ",
+  Vases: "Ծաղկամաններ",
+  Cushions: "Բարձիկներ",
+  Lights: "Լուսամփոփներ",
+
+  Bathroom: "Լոգասենյակ",
+  Towels: "Սրբիչներ",
+  ShowerItems: "Լոգանքի պարագաներ",
+  Mats: "Գորգիկներ",
+
+  Appliances: "Կենցաղային սարքեր",
+  SmallAppliances: "Փոքր սարքեր (բլենդեր, հացթուխ)",
+  LargeAppliances: "Մեծ սարքեր (սառնարան, լվացքի մեքենա)"
+};

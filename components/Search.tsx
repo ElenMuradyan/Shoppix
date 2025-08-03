@@ -1,35 +1,32 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { TextInput, View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { TextInput, View, StyleSheet, TouchableOpacity, Platform, Text, ScrollView } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { navigate } from 'expo-router/build/global-state/routing';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 
-export default function SearchBar({ handleSearch }: { handleSearch: (val: string) => void }) {
-  const [inputValue, setInputValue] = useState('');
-  const inputRef = useRef<TextInput>(null);
+export default function SearchBar({ handleSearch, inputValue, setInputValue}: { handleSearch: (val: string) => void, inputValue?: string, setInputValue?: (val: string) => void }) {
+    const inputRef = useRef<TextInput>(null);
 
-  useEffect(() => {
-    if (Platform.OS === 'web' && inputRef.current) {
-      const node = inputRef.current as any;
-      if (node && node._inputElement) {
-        node._inputElement.style.outline = 'none';
-      }
-    }
-  }, []);
+    useEffect(() => {
+        if (Platform.OS === 'web' && inputRef.current) {
+        const node = inputRef.current as any;
+        if (node && node._inputElement) {
+            node._inputElement.style.outline = 'none';
+        }
+        }
+    }, []);
 
-  const handleNav = () => {console.log(window.location.pathname);
-  
-    if(window.location.pathname === '/'){
+    const handleNav = () => {
+        if (window.location.pathname === '/') {
         navigate('/search');
-    }
-  }
+        }
+    };
 
-  return (
-    <View style={styles.wrapper}>
-        <TouchableOpacity
-        onPress={handleNav}
-        style={styles.inputContainer}
-        >
-        <TextInput
+    return (
+        <View style={styles.wrapper}>
+        <TouchableOpacity onPress={handleNav} style={styles.inputContainer}>
+            <TextInput
             ref={inputRef}
             value={inputValue}
             onChangeText={setInputValue}
@@ -37,13 +34,16 @@ export default function SearchBar({ handleSearch }: { handleSearch: (val: string
             placeholder="Որոնում"
             placeholderTextColor="#666"
             underlineColorAndroid="transparent"
-        />
+            />
         </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => handleSearch?.(inputValue)}>
-        <AntDesign name="search1" size={20} color="#333" />
-      </TouchableOpacity>
-    </View>
-  );
+        <TouchableOpacity
+            style={styles.button}
+            onPress={() => handleSearch?.(inputValue!)}
+        >
+            <AntDesign name="search1" size={20} color="#333" />
+        </TouchableOpacity>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingVertical: 4,
     width: '100%',
-  },
+   },
   inputContainer: {
     flex: 1, 
     height: 40,
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     color: '#000',
-  },
+   },
   button: {
     marginLeft: 8,
     padding: 10,
@@ -85,5 +85,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  dropdown: {
+    width: '100%',
+    maxHeight: 150,
+    backgroundColor: '#fff',
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 8,
+    marginTop: 4,
+    zIndex: 999,
   },
 });

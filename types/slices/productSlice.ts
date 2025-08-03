@@ -8,6 +8,7 @@ export type myProductsSliceType = {
 export type productsSliceType = {
     loading: boolean,
     products: ProductItemProps[],
+    productNames: string[],
 }
 
 export type productInitialValue = {
